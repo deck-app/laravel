@@ -1,0 +1,50 @@
+#User defined
+user:
+  backend_ws:
+    label:
+      laravel Version
+    hint:
+      Select a laravel version
+    type:
+      select
+    values:
+      - 6
+      - 7
+    target:
+      LARAVEL_VERSION
+
+  # run_cron:
+  #   label:
+  #     Run cron jobs?
+  #   type:
+  #     checkbox
+  #   hint:
+  #     Check to enable cron jobs
+  #   target:
+  #     MAUTIC_RUN_CRON
+  # mysql_version:
+  #   label:
+  #     MySQL version
+  #   hint:
+  #     Select MySQL version
+  #   type:
+  #     select
+  #   values:
+  #     - "5.0"
+  #     - "7.0"
+  #   target:
+  #     MYSQL_VERSION
+
+#System defaults
+system:
+  # show_localpath_selector:
+  #   true
+  #For collecting and storing DB in .env
+  #db/user/password
+  db_credentials:
+    true
+  #Generate public ports for the docker image
+  ports:
+    http: LARAVEL_HTTP_PORT
+    others:
+      - MYSQL_PORT
