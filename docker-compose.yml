@@ -8,6 +8,7 @@ services:
       - "DB_USERNAME=${MYSQL_USER}"
       - "DB_DATABASE=${MYSQL_DATABASE}"
       - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "privileged: true"
     depends_on:
       - "mysql"
     ports:
