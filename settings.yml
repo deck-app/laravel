@@ -48,4 +48,3 @@ system:
   ports:
     http: LARAVEL_HTTP_PORT
     others:
-      - MYSQL_PORT

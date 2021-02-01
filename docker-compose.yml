@@ -4,7 +4,7 @@ services:
     tty: true
     image: "docker.io/bitnami/laravel:${LARAVEL_VERSION}-debian-10"
     environment:
-      - "DB_HOST=mysql"
+      - "DB_HOST=mariadb"
       - "DB_USERNAME=${MYSQL_USER}"
       - "DB_DATABASE=${MYSQL_DATABASE}"
       - "DB_PASSWORD=${MYSQL_PASSWORD}"
@@ -14,18 +14,13 @@ services:
       - "${LARAVEL_HTTP_PORT}:3000"
     volumes:
       - "${APP_CODE_PATH_HOST}:/app"
-  mysql:
-    image: "deckapp/mysql:v10.1.19"
+  mariadb:
+    image: "docker.io/bitnami/mariadb:10.2-debian-10"
     environment:
+      - ALLOW_EMPTY_PASSWORD=yes
       - "MYSQL_DATABASE=${MYSQL_DATABASE}"
       - "MYSQL_USER=${MYSQL_USER}"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
-      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
-    volumes:
-      - "${DATA_PATH_HOST}/mysql:/var/lib/mysql"
-      - "./mysql:/etc/mysql/"
-    ports:
-      - "${MYSQL_PORT}:3306"
+
 volumes:
-  mysql:
-    driver: "${VOLUMES_DRIVER}"
+      {}
