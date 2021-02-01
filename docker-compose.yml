@@ -15,7 +15,7 @@ services:
       - DB_USERNAME=${MYSQL_USER}
       - DB_DATABASE=${MYSQL_DATABASE}
       - DB_PASSWORD=${MYSQL_PASSWORD}
-      - PRIVILEGED=${LARAVEL_PRIVILEGED}
+      - privileged=${LARAVEL_PRIVILEGED}
     depends_on:
       - mariadb
     ports:
