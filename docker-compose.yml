@@ -3,18 +3,18 @@ services:
     image: 'docker.io/bitnami/mariadb:10.2-debian-10'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=${MYSQL_USER}
-      - MARIADB_DATABASE=${MYSQL_DATABASE}
-      - MARIADB_PASSWORD=${MYSQL_PASSWORD}
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
 
   laravel:
     tty: true
     image: docker.io/bitnami/laravel:${LARAVEL_VERSION}-debian-10
     environment:
       - DB_HOST=mariadb
-      - DB_USERNAME=${MYSQL_USER}
-      - DB_DATABASE=${MYSQL_DATABASE}
-      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_USERNAME=${DB_USER}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PASSWORD=${DB_PASSWORD}
       - privileged=${LARAVEL_PRIVILEGED}
     depends_on:
       - mariadb
