@@ -4,7 +4,7 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - MARIADB_USER=${DB_USER}
-      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_DATABASE=${DB_NAME}
       - MARIADB_PASSWORD=${DB_PASSWORD}
 
   laravel:
@@ -13,7 +13,7 @@ services:
     environment:
       - DB_HOST=mariadb
       - DB_USERNAME=${DB_USER}
-      - DB_DATABASE=${DB_DATABASE}
+      - DB_DATABASE=${DB_NAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - privileged=${LARAVEL_PRIVILEGED}
     depends_on:
