@@ -57,4 +57,3 @@ system:
   #Generate public ports for the docker image
   ports:
     http: LARAVEL_HTTP_PORT
-    others:
