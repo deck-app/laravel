@@ -1,0 +1,31 @@
+FROM deckapp/apache:v7.2
+LABEL maintainer Naba Das <hello@get-deck.com>
+
+# Persistent runtime dependencies
+# Example RUN apk add --no-cache php7-openssl php7-sysvmsg php7-curl
+
+COPY httpd.conf /etc/apache2/httpd.conf
+VOLUME [ "/var/www/" ]
+WORKDIR /var/www
+COPY php_ini/php7.2.ini /etc/php7/php.ini
+
+ARG DISPLAY_PHPERROR
+RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
+sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
+;else \
+sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
+;fi
+
+#Xdebug enable or disable
+ARG XDEBUG
+RUN if [ ${XDEBUG} = true ]; then \
+apk add php7-pecl-xdebug \
+;fi
+
+RUN apk add php7-zip
+RUN apk add zip
+ARG LARAVEL_VERSION
+COPY docker-entrypoint${LARAVEL_VERSION}.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["/sbin/runit-wrapper"]

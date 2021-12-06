@@ -1,0 +1,17 @@
+version: '3'
+services:
+  laravel:
+    build:
+      context: '${BACK_END}'
+      dockerfile: 'Dockerfile-${PHP_VERSION}'
+      args:
+        - 'BACK_END=${BACK_END}'
+        - 'PHP_VERSION=${PHP_VERSION}'
+        - 'DISPLAY_PHPERROR=${DISPLAY_PHPERROR}'
+        - 'XDEBUG=${XDEBUG}'
+        - 'LARAVEL_VERSION=${LARAVEL_VERSION}'
+    volumes:
+      - '${APP_CODE_PATH_HOST}:${APP_CODE_PATH_LARAVEL}${APP_CODE_CONTAINER_FLAG}'
+    ports:
+      - '${LARAVEL_HOST_HTTP_PORT}:80'
+volumes: {}
