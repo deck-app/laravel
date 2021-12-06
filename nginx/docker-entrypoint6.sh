@@ -14,7 +14,6 @@ then
     echo "Take action $DIR is not Empty"
 else
     composer create-project --prefer-dist laravel/laravel:^6.0 .
-    cp /app/appenv.conf /var/www/.env
 fi
 echo "Application key set ...."
 php artisan key:generate
