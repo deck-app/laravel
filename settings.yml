@@ -26,6 +26,20 @@ user:
       - "8.0"
     target:
       PHP_VERSION
+  
+  backend_ws:
+      label:
+        Laravel Version
+      hint:
+        Select a laravel version
+      type:
+        select
+      values:
+        - 6
+        - 7
+        - 8
+      target:
+        LARAVEL_VERSION
 
   php_error_reporting:
     label:
