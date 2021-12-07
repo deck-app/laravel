@@ -13,6 +13,7 @@ mkdir ~/myapp
 cd ~/myapp
 ```
 Clone the application directory:
+```
 $ git clone https://github.com/deck-app/laravel.git
 $ cd laravel
 ```
