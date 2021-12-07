@@ -95,4 +95,4 @@ system:
   #Generate public ports for the docker image
   ports:
     http:
-      NGINX_HOST_HTTP_PORT
+      LARAVEL_HOST_HTTP_PORT
