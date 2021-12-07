@@ -13,6 +13,14 @@ else
 fi
 echo "Application key set ...."
 composer install
+if [ ! -f ".env" ]; 
+then
+    echo ".env file not found"
+    cp .env.example .env
+    php artisan key:generate
+else
+    echo ".env file exit"
+fi
 php artisan key:generate
 chmod -R 777 /var/www/storage
 exec "$@"
