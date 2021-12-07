@@ -12,6 +12,7 @@ else
     composer create-project --prefer-dist laravel/laravel:^8.0 .
 fi
 echo "Application key set ...."
+composer install
 php artisan key:generate
 chmod -R 777 /var/www/storage
 exec "$@"
