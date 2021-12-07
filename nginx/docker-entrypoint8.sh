@@ -1,9 +1,4 @@
 #!/bin/bash
-# Waiting for database connection...
-# while ! mysql --user=root --password=password --host=db ping --silent &> /dev/null ; do
-#     echo "Waiting for database connection..."
-#     sleep 2
-# done
 if [ -d "/var/www/vendor" ]
 then
     cd /var/www/
