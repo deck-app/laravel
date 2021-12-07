@@ -5,9 +5,7 @@ LABEL maintainer Naba Das <hello@get-deck.com>
 # Example RUN apk add --no-cache php8-openssl php8-sysvmsg php8-curl
 
 COPY default.conf /etc/nginx/conf.d/default.conf
-ARG SERVER_ROOT
-RUN sed -i "s#{SERVER_ROOT}#$SERVER_ROOT#g" /etc/nginx/conf.d/default.conf
-VOLUME [ "/var/www/" ]
+
 WORKDIR /var/www
 
 #PHP display error enable or disable

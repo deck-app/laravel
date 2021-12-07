@@ -7,7 +7,6 @@ LABEL maintainer Naba Das <hello@get-deck.com>
 
 COPY httpd.conf /etc/apache2/httpd.conf
 
-VOLUME [ "/var/www/" ]
 WORKDIR /var/www
 
 COPY php_ini/php7.4.ini /etc/php7/php.ini

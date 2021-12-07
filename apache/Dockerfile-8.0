@@ -8,7 +8,7 @@ LABEL maintainer Naba Das <hello@get-deck.com>
 COPY httpd.conf /etc/apache2/httpd.conf
 RUN ln -s /usr/bin/php /usr/bin/php8
 
-VOLUME [ "/var/www/" ]
+
 WORKDIR /var/www
 COPY php_ini/php8.0.ini /etc/php8/php.ini
 

@@ -20,8 +20,6 @@ user:
     type:
       select
     values:
-      - "7.2(Laravel 8 Not Support)"
-      - 7.3
       - 7.4
       - "8.0"
     target:
@@ -35,7 +33,6 @@ user:
       type:
         select
       values:
-        - 6
         - 7
         - 8
       target:
