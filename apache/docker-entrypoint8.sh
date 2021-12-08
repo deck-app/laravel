@@ -1,23 +1,21 @@
 #!/bin/bash
 
-if [ -d "/var/www/vendor" ]
+if [ -f "/var/www/composer.json" ]
 then
     cd /var/www/
-    composer update
+    composer install
     echo "Dependencies updated"
 elif [ "$(ls -A "/var/www/")" ]; 
 then
-    echo "Directory is not Empty"
+    echo "Directory is not Empty, Please deleted hiden file and directory"
 else
     composer create-project --prefer-dist laravel/laravel:^8.0 .
 fi
 echo "Application key set ...."
-composer install
 if [ ! -f ".env" ]; 
 then
     echo ".env file not found"
     cp .env.example .env
-    php artisan key:generate
 else
     echo ".env file exit"
 fi

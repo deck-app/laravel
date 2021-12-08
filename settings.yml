@@ -2,9 +2,9 @@
 user:
   back_end:
     label:
-      Back End
+      Backend
     hint:
-      Select a back end from the list above
+      Select a backend from the list above
     type:
       select
     values:
