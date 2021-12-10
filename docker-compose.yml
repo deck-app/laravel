@@ -10,6 +10,7 @@ services:
         - 'DISPLAY_PHPERROR=${DISPLAY_PHPERROR}'
         - 'XDEBUG=${XDEBUG}'
         - 'LARAVEL_VERSION=${LARAVEL_VERSION}'
+        - 'LARAVEL_INSTALL=${LARAVEL_INSTALL}'
     volumes:
       - '${APP_CODE_PATH_HOST}:${APP_CODE_PATH_LARAVEL}${APP_CODE_CONTAINER_FLAG}'
     ports:

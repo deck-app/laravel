@@ -54,7 +54,14 @@ user:
     hint: Check the box to display extension xdebug
     target:
       XDEBUG
-
+  laravel_install:
+    label:
+      Ignore Laravel installation?
+    type:
+      checkbox
+    hint: Check the box to display Ignore Laravel installation 
+    target:
+      LARAVEL_INSTALL
     
   # mysql_version:
   #   label:

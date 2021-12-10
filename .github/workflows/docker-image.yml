@@ -16,3 +16,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker-compose build
+        args: 7
+        using: 'nginx/docker-7.4'

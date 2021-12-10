@@ -5,7 +5,7 @@ LABEL maintainer Naba Das <hello@get-deck.com>
 # Example RUN apk add --no-cache php8-openssl php8-sysvmsg php8-curl
 
 COPY default.conf /etc/nginx/conf.d/default.conf
-
+RUN apk add --no-cache zip
 
 WORKDIR /var/www
 #PHP display error enable or disable
@@ -26,6 +26,13 @@ apk add php8-pecl-xdebug \
 
 ARG LARAVEL_VERSION
 COPY docker-entrypoint${LARAVEL_VERSION}.sh /docker-entrypoint.sh
+#LARAVEL_INSTALL enable or disable
+ARG LARAVEL_INSTALL
+RUN if [ ${LARAVEL_INSTALL} = true ]; then \
+sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
+;else \
+sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
+;fi
 RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/sbin/runit-wrapper"]

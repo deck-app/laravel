@@ -28,6 +28,13 @@ RUN apk add php7-zip
 RUN apk add zip
 ARG LARAVEL_VERSION
 COPY docker-entrypoint${LARAVEL_VERSION}.sh /docker-entrypoint.sh
+#LARAVEL_INSTALL enable or disable
+ARG LARAVEL_INSTALL
+RUN if [ ${LARAVEL_INSTALL} = true ]; then \
+sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
+;else \
+sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
+;fi
 RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/sbin/runit-wrapper"]

@@ -7,10 +7,10 @@ then
 elif [ "$(ls -A "/var/www/")" ]; 
 then
     echo "Directory is not Empty, Please deleted hiden file and directory"
-else
+elif [ {LARAVEL_INSTALL} = true ];
+then   
     composer create-project --prefer-dist laravel/laravel:^8.0 .
 fi
-echo "Application key set ...."
 if [ ! -f ".env" ]; 
 then
     echo ".env file not found"
@@ -18,6 +18,7 @@ then
 else
     echo ".env file exit"
 fi
+echo "Application key set ...."
 php artisan key:generate
 chmod -R 777 /var/www/storage
 exec "$@"
