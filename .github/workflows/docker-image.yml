@@ -15,8 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
+    - name: nginx php8 laravel8 Docker image
       run: docker-compose build
-        BACK_END: nginx apache
-        PHP_VERSION: 7.4 8.0
-        LARAVEL_VERSION: 7 8
-        using: '${{BACK_END}}/docker-${{PHP_VERSION}}'
+        using: 'docker'
+        image: 'nginx/Dockerfile-8.0'
+        args:
+          - ${{LARAVEL_VERSION}}
