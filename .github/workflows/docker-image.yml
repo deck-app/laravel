@@ -17,7 +17,6 @@ jobs:
     - name: Build the Docker image
     - name: nginx php8 laravel8 Docker image
       run: docker-compose build
-        using: 'docker'
         image: 'nginx/Dockerfile-8.0'
         args:
           - ${{LARAVEL_VERSION}}
