@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the image
-        run: docker build --build-arg BACK_END=nginx,PHP_VERSION=8.0,LARAVEL_VERSION=7 .
+        run: docker build --build-arg BACK_END=nginx,PHP_VERSION=8.0,LARAVEL_VERSION=7 -f nginx/Dockerfile-8.0 .
