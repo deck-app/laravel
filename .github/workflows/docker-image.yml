@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the image
-        run: docker-compose build --build-arg LARAVEL_VERSION="7" -f nginx/Dockerfile-8.0
+        run: docker-compose build --build-arg LARAVEL_VERSION="7" -f nginx/Dockerfile-8.0 .
