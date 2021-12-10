@@ -7,7 +7,7 @@ then
 elif [ "$(ls -A "/var/www/")" ]; 
 then
     echo "Directory is not Empty, Please deleted hiden file and directory"
-elif [ {LARAVEL_INSTALL} = true ];
+elif [ {LARAVEL_INSTALL} = false ];
 then   
     composer create-project --prefer-dist laravel/laravel:^8.0 .
 fi
