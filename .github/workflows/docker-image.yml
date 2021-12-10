@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the image
-        run: docker build
+        run: docker build 8.0 7
       - name: Build php8 Laravel 7 and backend nginx
         run: docker run --rm -it 7
