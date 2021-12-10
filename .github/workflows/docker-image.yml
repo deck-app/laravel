@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the image
-        run: docker build --build-arg LARAVEL_VERSION=7 -f nginx/Dockerfile-7.4 .
+        run: docker build --build-arg LARAVEL_VERSION=7,SERVER_ROOT=/var/www/public,APP_CODE_PATH_LARAVEL=/var/www,APP_CODE_CONTAINER_FLAG=:cached,DISPLAY_PHPERROR=true -f nginx/Dockerfile-7.4 .
