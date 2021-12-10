@@ -7,16 +7,11 @@ on:
     branches: [ master ]
 
 jobs:
-
-  build:
-
+  jobname:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-    - name: nginx php8 laravel8 Docker image
-      run: docker-compose build
-        image: 'nginx/Dockerfile-8.0'
-        args:
-          - ${{LARAVEL_VERSION}}
+      - uses: actions/checkout@v2
+      - name: Build the image
+        run: docker build
+      - name: Build php8 Laravel 7 and backend nginx
+        run: docker run --rm -it 7
