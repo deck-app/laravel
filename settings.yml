@@ -59,7 +59,7 @@ user:
       Ignore Laravel installation?
     type:
       checkbox
-    hint: Check the box to display Ignore Laravel installation 
+    hint: Laravel will not be install if you checkbox 
     target:
       LARAVEL_INSTALL
     
