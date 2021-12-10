@@ -26,6 +26,7 @@ apk add php8-pecl-xdebug \
 
 ARG LARAVEL_VERSION
 COPY docker-entrypoint${LARAVEL_VERSION}.sh /docker-entrypoint.sh
+
 #LARAVEL_INSTALL enable or disable
 ARG LARAVEL_INSTALL
 RUN if [ ${LARAVEL_INSTALL} = true ]; then \
