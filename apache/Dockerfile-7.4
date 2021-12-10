@@ -21,6 +21,7 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php7/php.ini \
 ARG XDEBUG
 RUN if [ ${XDEBUG} = true ]; then \
 apk add php7-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php7/php.ini \
 ;fi
 
 RUN apk add php7-zip

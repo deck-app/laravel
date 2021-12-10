@@ -5,8 +5,10 @@ LABEL maintainer Naba Das <hello@get-deck.com>
 # Example RUN apk add --no-cache php8-openssl php8-sysvmsg php8-curl
 
 COPY default.conf /etc/nginx/conf.d/default.conf
+RUN apk add git
 
 WORKDIR /var/www
+RUN git clone https://github.com/laravel/laravel.git
 
 #PHP display error enable or disable
 COPY php_ini/php8.0.ini /etc/php8/php.ini
@@ -21,6 +23,7 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php8/php.ini \
 ARG XDEBUG
 RUN if [ ${XDEBUG} = true ]; then \
 apk add php8-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php8/php.ini \
 ;fi
 
 RUN apk add zip

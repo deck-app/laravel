@@ -23,6 +23,7 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php8/php.ini \
 ARG XDEBUG
 RUN if [ ${XDEBUG} = true ]; then \
 apk add php8-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php8/php.ini \
 ;fi
 
 RUN apk add php8-zip
