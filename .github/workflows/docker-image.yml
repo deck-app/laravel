@@ -7,11 +7,9 @@ on:
     branches: [ master ]
 
 jobs:
-  jobname:
+  Laravel:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build the image
-        run: docker build --build-arg BACK_END=nginx PHP_VERSION=8.0 LARAVEL_VERSION=7
-      - name: Build php8 Laravel 7 and backend nginx
-        run: docker run --rm -it 7
+        run: docker build --build-arg BACK_END=nginx,PHP_VERSION=8.0,LARAVEL_VERSION=7
