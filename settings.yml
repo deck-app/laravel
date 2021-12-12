@@ -56,10 +56,10 @@ user:
       XDEBUG
   laravel_install:
     label:
-      Ignore Laravel installation?
+      DO NOT install Laravel
     type:
       checkbox
-    hint: Laravel will not be install if you checkbox 
+    hint: Incase you have a Laravel project already installed at the selected path
     target:
       LARAVEL_INSTALL
     
