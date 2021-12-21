@@ -4,8 +4,13 @@ LABEL maintainer Naba Das <hello@get-deck.com>
 # Persistent runtime dependencies
 # Example RUN apk add --no-cache php7-openssl php7-sysvmsg php7-curl
 
-
+RUN mkdir -p /app
+RUN mkdir -p /var/preview
 COPY httpd.conf /etc/apache2/httpd.conf
+COPY httpd.conf /app/httpd.conf
+COPY preview/* /var/preview/
+RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/apache2/httpd.conf
+RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/httpd.conf
 
 WORKDIR /var/www
 
@@ -36,5 +41,4 @@ sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
 sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
 ;fi
 RUN chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/sbin/runit-wrapper"]
+CMD /docker-entrypoint.sh & /sbin/runit-wrapper

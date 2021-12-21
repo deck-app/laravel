@@ -2,11 +2,16 @@ FROM ghcr.io/deck-app/nginx:v7.4
 LABEL maintainer Naba Das <hello@get-deck.com>
 
 ARG LARAVEL_VERSION
+RUN mkdir -p /app
+RUN mkdir -p /var/preview
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /app/default.conf
+COPY preview/* /var/preview/
+RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/nginx/conf.d/default.conf
+RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/default.conf
 
 # Persistent runtime dependencies
 # Example RUN apk add --no-cache php7-openssl php7-sysvmsg php7-curl
-
-COPY default.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /var/www
 
@@ -37,5 +42,4 @@ sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
 sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
 ;fi
 RUN chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/sbin/runit-wrapper"]
+CMD /docker-entrypoint.sh & /sbin/runit-wrapper
