@@ -36,5 +36,16 @@
       </div>
     </div>
   </div>
+  <script>
+    let pageOk = setInterval(async () => {
+      try {
+        let response = await fetch('/index.php');
+        if (response.ok) { // if HTTP-status is 200-299
+          clearInterval(pageOk);
+          location.href = '/';
+        }
+      } catch (error) {}
+    }, 1000);
+  </script>
 </body>
 </html>
