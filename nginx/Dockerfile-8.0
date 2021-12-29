@@ -42,10 +42,5 @@ sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
 sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
 ;fi
 
-#Application Download
-RUN curl -fLk -o /tmp/latest.zip  "https://wordpress.org/latest.zip"
-RUN mkdir /tmp/latest
-RUN unzip /tmp/latest.zip -d /tmp/latest
-
 RUN chmod +x /docker-entrypoint.sh
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper
