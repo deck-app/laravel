@@ -21,4 +21,8 @@ fi
 echo "Application key set ...."
 php artisan key:generate
 chmod -R 777 /var/www/storage
+cp /app/httpd.conf /etc/apache2/httpd.conf
+httpd -k graceful
+rm -rf /var/preview
+rm -rf /app
 exec "$@"

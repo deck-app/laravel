@@ -3,8 +3,15 @@ LABEL maintainer Naba Das <hello@get-deck.com>
 
 # Persistent runtime dependencies
 # Example RUN apk add --no-cache php8-openssl php8-sysvmsg php8-curl
+RUN apk add --no-cache rsync
 
+RUN mkdir -p /app
+RUN mkdir -p /var/preview
 COPY default.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /app/default.conf
+RUN wget -O /var/preview/index.html https://raw.githubusercontent.com/deck-app/stack-preview-screen/main/install/index.html
+RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/nginx/conf.d/default.conf
+RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/default.conf
 RUN apk add --no-cache zip
 
 WORKDIR /var/www
@@ -34,6 +41,6 @@ sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
 ;else \
 sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
 ;fi
+
 RUN chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/sbin/runit-wrapper"]
+CMD /docker-entrypoint.sh & /sbin/runit-wrapper

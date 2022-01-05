@@ -21,4 +21,8 @@ fi
 echo "Application key set ...."
 php artisan key:generate
 chmod -R 777 /var/www/storage
+cp /app/default.conf /etc/nginx/conf.d/default.conf
+nginx -s reload
+rm -rf /var/preview
+rm -rf /app
 exec "$@"
