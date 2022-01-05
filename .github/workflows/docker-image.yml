@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ v4 ]
+    branches: [ master ]
   pull_request:
-    branches: [ v4 ]
+    branches: [ master ]
 
 jobs:
   Laravel:
