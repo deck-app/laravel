@@ -31,8 +31,8 @@ apk add php8-pecl-xdebug \
 && echo "zend_extension=xdebug" >> /etc/php8/php.ini \
 ;fi
 
-RUN apk add php8-zip
-RUN apk add zip
+RUN apk add php8-zip openssh mercurial tzdata openntpd
+RUN apk add --no-cache zip apache2 apache2-utils
 ARG LARAVEL_VERSION
 COPY docker-entrypoint${LARAVEL_VERSION}.sh /docker-entrypoint.sh
 #LARAVEL_INSTALL enable or disable
@@ -42,5 +42,6 @@ sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
 ;else \
 sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
 ;fi
+
 RUN chmod +x /docker-entrypoint.sh
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper
