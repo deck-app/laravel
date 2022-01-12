@@ -56,5 +56,4 @@ rm -rf /var/preview
 nginx -s reload
 
 chmod -R 777 /var/www/storage
-echo "Application installation Done, please restart in your Broswer"
 exec "$@"
