@@ -51,9 +51,9 @@ else
 fi
 echo "Application key set ...."
 php artisan key:generate
-cp /app/httpd.conf /etc/apache2/httpd.conf
+cp /app/default.conf /etc/nginx/conf.d/default.conf
 rm -rf /var/preview
-httpd -k graceful
+nginx -s reload
 
 chmod -R 777 /var/www/storage
 echo "Application installation Done, please restart in your Broswer"
