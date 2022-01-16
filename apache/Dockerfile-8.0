@@ -11,8 +11,6 @@ RUN wget -O /var/preview/index.html https://raw.githubusercontent.com/deck-app/s
 RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/apache2/httpd.conf
 RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/httpd.conf
 
-RUN ln -s /usr/bin/php /usr/bin/php8
-
 
 WORKDIR /var/www
 COPY php_ini/php8.0.ini /etc/php8/php.ini
