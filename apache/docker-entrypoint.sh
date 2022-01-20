@@ -15,7 +15,7 @@ then
         php artisan clear-compiled
         chmod -R 777 /var/www/storage
     else
-        echo "Composer vendor folder was not installed. Running $> composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev"
+        echo "Composer vendor folder was not installed. Running composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev"
         composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
         echo "Laravel - Clear All [Development]"
         php artisan view:clear
@@ -32,7 +32,7 @@ then
     then
         echo "Directory is not Empty, Please deleted hiden file and directory"
     else
-        composer create-project --prefer-dist laravel/laravel:^8.0 .
+        composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
         echo "Laravel - Clear All [Development]"
         php artisan view:clear
         php artisan route:clear
@@ -41,7 +41,7 @@ then
         chmod -R 777 /var/www/storage
     fi
 fi
-echo "Application Enverment veriable check"
+echo "Application environment variable check"
 if [[ ! -f ".env" ]] ;
 then
     echo ".env file not found"
@@ -51,9 +51,10 @@ else
 fi
 echo "Application key set ...."
 php artisan key:generate
-cp /app/default.conf /etc/nginx/conf.d/default.conf
+cp /app/httpd.conf /etc/apache2/httpd.conf
 rm -rf /var/preview
-nginx -s reload
+kill -TERM `cat /var/run/apache2/httpd.pid`
+httpd -k graceful
 
 chmod -R 777 /var/www/storage
 exec "$@"

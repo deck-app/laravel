@@ -16,7 +16,7 @@ RUN apk add --no-cache zip
 
 WORKDIR /var/www
 #PHP display error enable or disable
-COPY php_ini/php8.0.ini /etc/php8/php.ini
+COPY php_ini/php.ini /etc/php8/php.ini
 ARG DISPLAY_PHPERROR
 RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
 sed -i "s#{DISPLAY}#On#g" /etc/php8/php.ini \
@@ -32,7 +32,8 @@ apk add php8-pecl-xdebug \
 ;fi
 
 ARG LARAVEL_VERSION
-COPY docker-entrypoint${LARAVEL_VERSION}.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
 
 #LARAVEL_INSTALL enable or disable
 ARG LARAVEL_INSTALL

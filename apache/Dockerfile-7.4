@@ -14,7 +14,7 @@ RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/httpd.conf
 
 WORKDIR /var/www
 
-COPY php_ini/php7.4.ini /etc/php7/php.ini
+COPY php_ini/php.ini /etc/php7/php.ini
 ARG DISPLAY_PHPERROR
 RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
 sed -i "s#{DISPLAY}#On#g" /etc/php7/php.ini \
@@ -32,7 +32,8 @@ apk add php7-pecl-xdebug \
 RUN apk add php7-zip openssh mercurial tzdata openntpd
 RUN apk add zip apache2 apache2-utils
 ARG LARAVEL_VERSION
-COPY docker-entrypoint${LARAVEL_VERSION}.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
 #LARAVEL_INSTALL enable or disable
 ARG LARAVEL_INSTALL
 RUN if [ ${LARAVEL_INSTALL} = true ]; then \
