@@ -29,6 +29,13 @@ apk add php8-pecl-xdebug \
 && echo "zend_extension=xdebug" >> /etc/php8/php.ini \
 ;fi
 
+ARG INSTALL_ADDITIONAL_EXTENSIONS
+RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
+echo "No additional PHP extensions added" \
+;else \
+apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
+;fi
+
 RUN apk add php8-zip openssh mercurial tzdata openntpd
 RUN apk add --no-cache zip apache2 apache2-utils
 ARG LARAVEL_VERSION
