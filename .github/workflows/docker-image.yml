@@ -37,14 +37,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: PHP version check
-        run:  php -v
-      - name: Mongodb driver check
-        run:  php -m | grep mongo
-      - name: Mysql Driver check
-        run: php -m | grep mysqli
-      - name: Laravel8 test
-        run:  composer create-project --prefer-dist laravel/laravel:^7.0
       - name: Build the image with php 7.4 Laravel 8 and nginx
         run: docker-compose build
         env:
@@ -54,14 +46,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: PHP version check
-        run:  php -v
-      - name: Mongodb driver check
-        run:  php -m | grep mongo
-      - name: Mysql Driver check
-        run: php -m | grep mysqli
-      - name: Laravel8 test
-        run:  composer create-project --prefer-dist laravel/laravel:^8.0
       - name: Build the image with php 7.4 Laravel 7 and nginx
         run: docker-compose build
         env:
@@ -71,14 +55,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: PHP version check
-        run:  php -v
-      - name: Mongodb driver check
-        run:  php -m | grep mongo
-      - name: Mysql Driver check
-        run: php -m | grep mysqli
-      - name: Laravel8 test
-        run:  composer create-project --prefer-dist laravel/laravel:^7.0
       - name: Build the image with php 8.0 Laravel 8 and apache
         run: docker-compose build
         env:
@@ -88,14 +64,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: PHP version check
-        run:  php -v
-      - name: Mongodb driver check
-        run:  php -m | grep mongo
-      - name: Mysql Driver check
-        run: php -m | grep mysqli
-      - name: Laravel8 test
-        run:  composer create-project --prefer-dist laravel/laravel:^8.0
       - name: Build the image with php 8.0 Laravel 7 and apache
         run: docker-compose build
         env:
@@ -105,14 +73,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: PHP version check
-        run:  php -v
-      - name: Mongodb driver check
-        run:  php -m | grep mongo
-      - name: Mysql Driver check
-        run: php -m | grep mysqli
-      - name: Laravel8 test
-        run:  composer create-project --prefer-dist laravel/laravel:^7.0
       - name: Build the image with php 7.4 Laravel 8 and apache
         run: docker-compose build
         env:
@@ -122,14 +82,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: PHP version check
-        run:  php -v
-      - name: Mongodb driver check
-        run:  php -m | grep mongo
-      - name: Mysql Driver check
-        run: php -m | grep mysqli
-      - name: Laravel8 test
-        run:  composer create-project --prefer-dist laravel/laravel:^8.0
       - name: Build the image with php 7.4 Laravel 7 and apache
         run: docker-compose build
         env:
@@ -139,11 +91,3 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: PHP version check
-        run:  php -v
-      - name: Mongodb driver check
-        run:  php -m | grep mongo
-      - name: Mysql Driver check
-        run: php -m | grep mysqli
-      - name: Laravel8 test
-        run:  composer create-project --prefer-dist laravel/laravel:^7.0
