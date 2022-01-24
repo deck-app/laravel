@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the image with php 8.0 Laravel 8 and nginx
-        run: docker-compose build
+        run: docker-compose -f "docker-compose.yml" up -d --build
         env:
           PHP_VERSION: "8.0"
           LARAVEL_VERSION: 8
@@ -20,6 +20,10 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
+        run:  php -v
+        run:  php -m | grep mongo
+        run: php -m | grep mysqli
+        run:  composer create-project --prefer-dist laravel/laravel:^8.0
       - name: Build the image with php 8.0 Laravel 7 and nginx
         run: docker-compose build
         env:

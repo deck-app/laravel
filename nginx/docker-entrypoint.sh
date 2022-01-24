@@ -13,16 +13,9 @@ then
         php artisan route:clear
         php artisan config:clear
         php artisan clear-compiled
-        chmod -R 777 /var/www/storage
     else
         echo "Composer vendor folder was not installed. Running $> composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev"
         composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
-        echo "Laravel - Clear All [Development]"
-        php artisan view:clear
-        php artisan route:clear
-        php artisan config:clear
-        php artisan clear-compiled
-        chmod -R 777 /var/www/storage
     fi
 
 fi
@@ -33,12 +26,7 @@ then
         echo "Directory is not Empty, Please deleted hiden file and directory"
     else
         composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
-        echo "Laravel - Clear All [Development]"
-        php artisan view:clear
-        php artisan route:clear
-        php artisan config:clear
-        php artisan clear-compiled
-        chmod -R 777 /var/www/storage
+
     fi
 fi
 echo "Application environment variable check"
@@ -49,11 +37,17 @@ then
 else
     echo ".env file exit"
 fi
-echo "Application key set ...."
+
 php artisan key:generate
 cp /app/default.conf /etc/nginx/conf.d/default.conf
 rm -rf /var/preview
+if [ "$(stat -c '%a' /var/www/storage)" == "nobody:nobody" ]
+then
+  echo "Storage folder already write permissions"
+else
+  chown -R nobody:nobody /var/www/storage
+fi
+pkill -9 php
 nginx -s reload
 
-chmod -R 777 /var/www/storage
 exec "$@"

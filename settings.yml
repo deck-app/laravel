@@ -55,6 +55,7 @@ user:
     target:
       XDEBUG
   laravel_install:
+    show_on_install: true
     label:
       DO NOT install Laravel
     type:
