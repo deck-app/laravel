@@ -30,8 +30,8 @@ jobs:
     - name: PHP version check
       run:  docker-compose ps
     #   run:  docker-compose exec laravel_laravel_1 php -v
-    # - name: Mongodb driver check
-    #   run:  docker-compose exec laravel_laravel_1 php -m | grep mongo
+    - name: Mongodb driver check
+      run:  docker-compose exec laravel_laravel_1 php -m | grep mongo
     # - name: Mysql Driver check
     #   run: docker-compose exec laravel_laravel_1 php -m | grep mysqli
     # - name: Composer test
