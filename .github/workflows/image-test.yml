@@ -28,10 +28,11 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/app/
     - name: PHP version check
-      run:  docker-compose ps
-    #   run:  docker-compose exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker-compose exec laravel_laravel_1 php -m | grep mongo
+      run: |
+        docker-compose ps
+        docker-compose exec laravel_laravel_1 php -v
+    # - name: Mongodb driver check
+    #   run:  docker-compose exec laravel_laravel_1 php -m | grep mongo
     # - name: Mysql Driver check
     #   run: docker-compose exec laravel_laravel_1 php -m | grep mysqli
     # - name: Composer test
