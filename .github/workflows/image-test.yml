@@ -25,15 +25,18 @@ jobs:
         LARAVEL_INSTALL: true
         XDEBUG: true
         DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/app/
+    - name: PHP version check
+      run:  docker-compose exec laravel_laravel_1 php -v
     - name: Mongodb driver check
-      run:  php -m | grep mongo
+      run:  docker-compose exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
-      run: php -m | grep mysqli
+      run: docker-compose exec laravel_laravel_1 php -m | grep mysqli
     - name: Composer test
-      run: composer
-    - name: Index file downlaod in /var/www and Web site Test
-      run: sudo curl -I --http2 http://localhost:53487/ | grep HTTP
-      # run: docker-compose -f "docker-compose.yml" up -d --build curl http://localhost:5111/
-    # - name: Test
-      # run: curl -I --http2 http://localhost:5111/ | grep HTTP
+      run: docker-compose exec laravel_laravel_1 composer
+    - name: Laravel test
+      run:  |
+        sleep 300s
+        curl -i http://localhost:53487/
     
