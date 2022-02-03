@@ -31,7 +31,7 @@ jobs:
       run: |
         docker-compose ps
         sleep 30s
-        docker-compose exec laravel_laravel_1 php -v
+        docker exec laravel_laravel_1 php -v
     # - name: Mongodb driver check
     #   run:  docker-compose exec laravel_laravel_1 php -m | grep mongo
     # - name: Mysql Driver check
