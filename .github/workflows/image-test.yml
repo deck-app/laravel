@@ -9,7 +9,6 @@ on:
     branches: [ master ]
 
 jobs:
-  job1:
     Nginx-php8-laravel8:
       runs-on: ubuntu-latest
       steps:
@@ -56,7 +55,7 @@ jobs:
         run:  |
           docker-compose down
           sudo rm -rf /tmp/app/
-  job2:
+
     Nginx-php8-laravel7:
       runs-on: ubuntu-latest
       steps:
