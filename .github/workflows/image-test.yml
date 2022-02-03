@@ -35,12 +35,17 @@ jobs:
       run: docker exec laravel_laravel_1 php -m | grep mysqli
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: File check
+    - name: Laravel Install
+      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+    - name: App Key Generate
+      run:  docker exec laravel_laravel_1 php artisan key:generate
+    - name: Documenty root change
       run:  |
-        sleep 30s
-        docker exec laravel_laravel_1 ls -la /var/www
-    # - name: Laravel test
-    #   run:  |
-    #     sleep 300s
-    #     curl -i http://localhost:53487/
+        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+        docker exec laravel_laravel_1 pkill -9 php
+        docker exec laravel_laravel_1 nginx -s reload
+
+    - name: Laravel test
+      run:  |
+        curl -i http://localhost:53487/
     
