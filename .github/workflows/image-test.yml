@@ -28,18 +28,15 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/app/
     - name: PHP version check
-      run: |
-        docker-compose ps
-        sleep 30s
-        docker exec laravel_laravel_1 php -v
-    # - name: Mongodb driver check
-    #   run:  docker-compose exec laravel_laravel_1 php -m | grep mongo
-    # - name: Mysql Driver check
-    #   run: docker-compose exec laravel_laravel_1 php -m | grep mysqli
-    # - name: Composer test
-    #   run: docker-compose exec laravel_laravel_1 composer
-    # - name: Laravel test
-    #   run:  |
-    #     sleep 300s
-    #     curl -i http://localhost:53487/
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Laravel test
+      run:  |
+        sleep 300s
+        curl -i http://localhost:53487/
     
