@@ -230,7 +230,6 @@ jobs:
       - name: Documenty root change
         run:  |
           docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-          docker exec laravel_laravel_1 kill -TERM `cat /var/run/apache2/httpd.pid`
           docker exec laravel_laravel_1 httpd -k graceful
       - name: root path check
         run: |
@@ -277,7 +276,6 @@ jobs:
       - name: Root Path change
         run:  |
           docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-          docker exec laravel_laravel_1 kill -TERM `cat /var/run/apache2/httpd.pid`
           docker exec laravel_laravel_1 httpd -k graceful
       - name: Root path check
         run: |
@@ -324,7 +322,6 @@ jobs:
       - name: Root Path change
         run:  |
           docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-          docker exec laravel_laravel_1 kill -TERM `cat /var/run/apache2/httpd.pid`
           docker exec laravel_laravel_1 httpd -k graceful
       - name: Root path check
         run: |
@@ -371,7 +368,6 @@ jobs:
       - name: Root Path change
         run:  |
           docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-          docker exec laravel_laravel_1 kill -TERM `cat /var/run/apache2/httpd.pid`
           docker exec laravel_laravel_1 httpd -k graceful
       - name: Root path check
         run: |
