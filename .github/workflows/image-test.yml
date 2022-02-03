@@ -35,8 +35,12 @@ jobs:
       run: docker exec laravel_laravel_1 php -m | grep mysqli
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Laravel test
+    - name: File check
       run:  |
-        sleep 300s
-        curl -i http://localhost:53487/
+        sleep 30s
+        docker exec laravel_laravel_1 ls -la /var/www
+    # - name: Laravel test
+    #   run:  |
+    #     sleep 300s
+    #     curl -i http://localhost:53487/
     
