@@ -754,7 +754,7 @@ jobs:
   NotifyWhatsApp:
     runs-on:  ubuntu-latest
     steps:
-      - users: actions/checkout@master
+      - uses: actions/checkout@master
       - name: Notification WhatsApp
         id: whatsapp-notify
         env:
@@ -762,3 +762,4 @@ jobs:
           auth_token:   ${{ secrets.twilio_auth_token }}
           to_whatsapp_no: ${{ secrets.twilio_to_whatsapp_no }}
           message:  "CI 🚀 Your LARAVEL-Stack"
+        uses: actions/checkout@v2
