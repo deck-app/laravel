@@ -751,15 +751,15 @@ jobs:
         echo "y" | docker image prune -a
 
 
-  NotifyWhatsApp:
-    runs-on:  ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Notification WhatsApp
-        id: whatsapp-notify
-        env:
-          account_sid:  ${{ secrets.twilio_account_sid }}
-          auth_token:   ${{ secrets.twilio_auth_token }}
-          to_whatsapp_no: ${{ secrets.twilio_to_whatsapp_no }}
-          message:  "CI 🚀 Your LARAVEL-Stack"
-        uses: actions/checkout@v2
+  # NotifyWhatsApp:
+  #   runs-on:  ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - name: Notification WhatsApp
+  #       id: whatsapp-notify
+  #       env:
+  #         account_sid:  ${{ secrets.twilio_account_sid }}
+  #         auth_token:   ${{ secrets.twilio_auth_token }}
+  #         to_whatsapp_no: ${{ secrets.twilio_to_whatsapp_no }}
+  #         message:  "CI 🚀 Your LARAVEL-Stack"
+  #       uses: actions/checkout@v2
