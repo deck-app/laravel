@@ -48,5 +48,6 @@ sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
 ;else \
 sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
 ;fi
+RUN rm -f /var/run/apache2/httpd.pid
 RUN chmod +x /docker-entrypoint.sh
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper
