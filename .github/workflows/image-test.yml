@@ -62,11 +62,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image nginx, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -164,11 +163,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image nginx, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -265,11 +263,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image nginx, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -366,11 +363,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image nginx, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -423,11 +419,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image Apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -475,11 +470,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image Apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -574,11 +568,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image Apache, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -674,11 +667,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image Apache, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -773,11 +765,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/app || -d /tmp/db ]
+        while [ -d /tmp/app ]
         do
           sleep 3s
           sudo rm -rf /tmp/app
-          sudo rm -rf /tmp/db
         done
     - name: Build the Docker image Apache, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
