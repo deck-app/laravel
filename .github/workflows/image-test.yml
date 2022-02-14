@@ -60,6 +60,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image nginx, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -154,6 +162,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image nginx, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -247,6 +263,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image nginx, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -340,6 +364,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image nginx, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -389,6 +421,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image Apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -433,6 +473,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image Apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -524,6 +572,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image Apache, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -616,6 +672,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image Apache, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -707,6 +771,14 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/app || -d /tmp/db ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/app
+          sudo rm -rf /tmp/db
+        done
     - name: Build the Docker image Apache, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -749,17 +821,3 @@ jobs:
         echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
-
-
-  # NotifyWhatsApp:
-  #   runs-on:  ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - name: Notification WhatsApp
-  #       id: whatsapp-notify
-  #       env:
-  #         account_sid:  ${{ secrets.twilio_account_sid }}
-  #         auth_token:   ${{ secrets.twilio_auth_token }}
-  #         to_whatsapp_no: ${{ secrets.twilio_to_whatsapp_no }}
-  #         message:  "CI 🚀 Your LARAVEL-Stack"
-  #       uses: actions/checkout@v2
