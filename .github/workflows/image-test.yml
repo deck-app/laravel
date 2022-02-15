@@ -108,8 +108,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
 
@@ -209,8 +208,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
     
@@ -310,8 +308,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
 
@@ -411,8 +408,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
 
@@ -518,8 +514,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
 
@@ -617,8 +612,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
 
@@ -717,8 +711,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
 
@@ -816,7 +809,6 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        while [ -d /tmp/app ]; do
-        echo "Abcd@1234" | sudo -S whoami
+        echo "password" | sudo -S whoami
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
