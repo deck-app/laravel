@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 if [[ -f "/var/www/composer.json" ]] ;
 then
@@ -44,6 +44,7 @@ if [ "$(stat -c '%a' /var/www/storage)" == "apache:apache" ]
 then
   echo "Storage folder already write permissions"
 else
+  su apache
   chown -R apache:apache /var/www/storage
 fi
 kill -TERM `cat /var/run/apache2/httpd.pid`
