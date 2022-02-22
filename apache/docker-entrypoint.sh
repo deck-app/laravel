@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set +x
 
 if [[ -f "/var/www/composer.json" ]] ;
 then
