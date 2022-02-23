@@ -2,7 +2,7 @@ name: Laravel
 
 on:
   schedule:
-  - cron:  '30 5,17 * * *'
+  - cron:  '30 5 * * *'
   push:
     branches: [ master ]
   pull_request:
@@ -32,8 +32,6 @@ jobs:
       run: docker exec laravel_laravel_1 php -m | grep mysqli
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
     - name: App Key Generate
       run:  docker exec laravel_laravel_1 php artisan key:generate
     - name: Directory Permissions
@@ -50,765 +48,764 @@ jobs:
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
-
     - name: Destroy container and file
       run:  |
         docker-compose down
         sudo rm -rf /tmp/app/
         echo "y" | docker image prune -a
-  Nginx-php8-laravel8-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image nginx, php 8.0 and laravel 8
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "8.0"
-        LARAVEL_VERSION: 8
-        BACK_END: nginx
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
-        docker exec laravel_laravel_1 pkill -9 php
-        docker exec laravel_laravel_1 nginx -s reload
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
+  # Nginx-php8-laravel8-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image nginx, php 8.0 and laravel 8
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "8.0"
+  #       LARAVEL_VERSION: 8
+  #       BACK_END: nginx
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+  #       docker exec laravel_laravel_1 pkill -9 php
+  #       docker exec laravel_laravel_1 nginx -s reload
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
 
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
 
-  Nginx-php8-laravel7-AMD64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image nginx, php 8.0 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "8.0"
-        LARAVEL_VERSION: 7
-        BACK_END: nginx
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
-        docker exec laravel_laravel_1 pkill -9 php
-        docker exec laravel_laravel_1 nginx -s reload
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        sudo rm -rf /tmp/app/
-  Nginx-php8-laravel7-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image nginx, php 8.0 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "8.0"
-        LARAVEL_VERSION: 7
-        BACK_END: nginx
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
-        docker exec laravel_laravel_1 pkill -9 php
-        docker exec laravel_laravel_1 nginx -s reload
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  # Nginx-php8-laravel7-AMD64:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Build the Docker image nginx, php 8.0 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "8.0"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: nginx
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+  #       docker exec laravel_laravel_1 pkill -9 php
+  #       docker exec laravel_laravel_1 nginx -s reload
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       sudo rm -rf /tmp/app/
+  # Nginx-php8-laravel7-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image nginx, php 8.0 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "8.0"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: nginx
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+  #       docker exec laravel_laravel_1 pkill -9 php
+  #       docker exec laravel_laravel_1 nginx -s reload
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
     
-  Nginx-php7-laravel8-AMD64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image nginx, php 7.4 and laravel 8
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 8
-        BACK_END: nginx
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
-        docker exec laravel_laravel_1 pkill -9 php
-        docker exec laravel_laravel_1 nginx -s reload
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        sudo rm -rf /tmp/app/
-  Nginx-php7-laravel8-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image nginx, php 7.4 and laravel 8
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 8
-        BACK_END: nginx
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
-        docker exec laravel_laravel_1 pkill -9 php
-        docker exec laravel_laravel_1 nginx -s reload
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  # Nginx-php7-laravel8-AMD64:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Build the Docker image nginx, php 7.4 and laravel 8
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 8
+  #       BACK_END: nginx
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+  #       docker exec laravel_laravel_1 pkill -9 php
+  #       docker exec laravel_laravel_1 nginx -s reload
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       sudo rm -rf /tmp/app/
+  # Nginx-php7-laravel8-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image nginx, php 7.4 and laravel 8
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 8
+  #       BACK_END: nginx
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+  #       docker exec laravel_laravel_1 pkill -9 php
+  #       docker exec laravel_laravel_1 nginx -s reload
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
 
-  Nginx-php7-laravel7-AMD64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image nginx, php 7.4 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 7
-        BACK_END: nginx
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
-        docker exec laravel_laravel_1 pkill -9 php
-        docker exec laravel_laravel_1 nginx -s reload
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        sudo rm -rf /tmp/app/
-  Nginx-php7-laravel7-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image nginx, php 7.4 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 7
-        BACK_END: nginx
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
-        docker exec laravel_laravel_1 pkill -9 php
-        docker exec laravel_laravel_1 nginx -s reload
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  # Nginx-php7-laravel7-AMD64:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Build the Docker image nginx, php 7.4 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: nginx
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+  #       docker exec laravel_laravel_1 pkill -9 php
+  #       docker exec laravel_laravel_1 nginx -s reload
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       sudo rm -rf /tmp/app/
+  # Nginx-php7-laravel7-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image nginx, php 7.4 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: nginx
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/default.conf /etc/nginx/conf.d/default.conf
+  #       docker exec laravel_laravel_1 pkill -9 php
+  #       docker exec laravel_laravel_1 nginx -s reload
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
 
 
-  Apache-php8-laravel8-AMD64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image Apache, php 8.0 and laravel 8
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "8.0"
-        LARAVEL_VERSION: 8
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Documenty root change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        sudo rm -rf /tmp/app/
-  Apache-php8-laravel8-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image Apache, php 8.0 and laravel 8
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "8.0"
-        LARAVEL_VERSION: 8
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Documenty root change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  # Apache-php8-laravel8-AMD64:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image Apache, php 8.0 and laravel 8
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "8.0"
+  #       LARAVEL_VERSION: 8
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Documenty root change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       sudo rm -rf /tmp/app/
+  # Apache-php8-laravel8-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image Apache, php 8.0 and laravel 8
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "8.0"
+  #       LARAVEL_VERSION: 8
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Documenty root change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
 
-  Apache-php8-laravel7-AMD64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image Apache, php 8.0 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "8.0"
-        LARAVEL_VERSION: 7
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        sudo rm -rf /tmp/app/
-  Apache-php8-laravel7-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image Apache, php 8.0 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "8.0"
-        LARAVEL_VERSION: 7
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  # Apache-php8-laravel7-AMD64:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Build the Docker image Apache, php 8.0 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "8.0"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       sudo rm -rf /tmp/app/
+  # Apache-php8-laravel7-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image Apache, php 8.0 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "8.0"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
 
     
-  Apache-php7-laravel8-AMD64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image Apache, php 7.4 and laravel 8
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 8
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        sudo rm -rf /tmp/app/
-  Apache-php7-laravel8-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image Apache, php 7.4 and laravel 8
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 8
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  # Apache-php7-laravel8-AMD64:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Build the Docker image Apache, php 7.4 and laravel 8
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 8
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       sudo rm -rf /tmp/app/
+  # Apache-php7-laravel8-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image Apache, php 7.4 and laravel 8
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 8
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^8.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
 
-  Apache-php7-laravel7-AMD64:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image Apache, php 7.4 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 7
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        sudo rm -rf /tmp/app/
-  Apache-php7-laravel7-ARM64:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-    - name: File and folder check
-      run:  |
-        while [ -d /tmp/app ]
-        do
-          sleep 3s
-          sudo rm -rf /tmp/app
-        done
-    - name: Build the Docker image Apache, php 7.4 and laravel 7
-      run: docker-compose -f "docker-compose.yml" up -d --build
-      env:
-        PHP_VERSION: "7.4"
-        LARAVEL_VERSION: 7
-        BACK_END: apache
-        LARAVEL_INSTALL: true
-        XDEBUG: true
-        DISPLAY_PHPERROR: true
-        SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/app/
-    - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
-    - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
-    - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
-    - name: Composer test
-      run: docker exec laravel_laravel_1 composer
-    - name: Laravel Install
-      run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
-    - name: App Key Generate
-      run:  docker exec laravel_laravel_1 php artisan key:generate
-    - name: Directory Permissions
-      run:  docker exec laravel_laravel_1 chmod -R 777 storage
-    - name: Root Path change
-      run:  |
-        docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
-        docker exec laravel_laravel_1 httpd -k graceful
-    - name: Root path check
-      run: |
-        docker exec laravel_laravel_1 ls -la
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-    - name: Laravel test
-      run:  |
-        curl -i http://localhost:53487/
-    - name: Destroy container and file
-      run:  |
-        docker-compose down
-        echo "password" | sudo -S whoami
-        sudo rm -rf /tmp/app/
-        echo "y" | docker image prune -a
+  # Apache-php7-laravel7-AMD64:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Build the Docker image Apache, php 7.4 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       sudo rm -rf /tmp/app/
+  # Apache-php7-laravel7-ARM64:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: File and folder check
+  #     run:  |
+  #       while [ -d /tmp/app ]
+  #       do
+  #         sleep 3s
+  #         sudo rm -rf /tmp/app
+  #       done
+  #   - name: Build the Docker image Apache, php 7.4 and laravel 7
+  #     run: docker-compose -f "docker-compose.yml" up -d --build
+  #     env:
+  #       PHP_VERSION: "7.4"
+  #       LARAVEL_VERSION: 7
+  #       BACK_END: apache
+  #       LARAVEL_INSTALL: true
+  #       XDEBUG: true
+  #       DISPLAY_PHPERROR: true
+  #       SERVER_ROOT:  /var/www/public
+  #       APP_CODE_PATH_HOST: /tmp/app/
+  #   - name: PHP version check
+  #     run:  docker exec laravel_laravel_1 php -v
+  #   - name: Mongodb driver check
+  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
+  #   - name: Mysql Driver check
+  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
+  #   - name: Composer test
+  #     run: docker exec laravel_laravel_1 composer
+  #   - name: Laravel Install
+  #     run:  docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^7.0 .
+  #   - name: App Key Generate
+  #     run:  docker exec laravel_laravel_1 php artisan key:generate
+  #   - name: Directory Permissions
+  #     run:  docker exec laravel_laravel_1 chmod -R 777 storage
+  #   - name: Root Path change
+  #     run:  |
+  #       docker exec laravel_laravel_1 cp /app/httpd.conf /etc/apache2/httpd.conf
+  #       docker exec laravel_laravel_1 httpd -k graceful
+  #   - name: Root path check
+  #     run: |
+  #       docker exec laravel_laravel_1 ls -la
+  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+  #   - name: Laravel test
+  #     run:  |
+  #       curl -i http://localhost:53487/
+  #   - name: Destroy container and file
+  #     run:  |
+  #       docker-compose down
+  #       echo "password" | sudo -S whoami
+  #       sudo rm -rf /tmp/app/
+  #       echo "y" | docker image prune -a
