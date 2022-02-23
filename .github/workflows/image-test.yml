@@ -22,7 +22,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -47,17 +47,17 @@ jobs:
       run:  |
         docker-compose down
         echo "y" | docker image prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
   Nginx-php8-laravel8-ARM64:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image nginx, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -68,7 +68,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -95,7 +95,7 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
       
 
   Nginx-php8-laravel7-AMD64:
@@ -111,7 +111,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -135,7 +135,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
         echo "y" | docker image prune -a
   Nginx-php8-laravel7-ARM64:
     runs-on: self-hosted
@@ -143,10 +143,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image nginx, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -157,7 +157,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -184,7 +184,7 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
     
   Nginx-php7-laravel8-AMD64:
     runs-on: ubuntu-latest
@@ -199,7 +199,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -223,7 +223,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
         echo "y" | docker image prune -a
   Nginx-php7-laravel8-ARM64:
     runs-on: self-hosted
@@ -231,10 +231,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image nginx, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -245,7 +245,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -272,7 +272,7 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
 
   Nginx-php7-laravel7-AMD64:
     runs-on: ubuntu-latest
@@ -287,7 +287,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -311,7 +311,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
         echo "y" | docker image prune -a
   Nginx-php7-laravel7-ARM64:
     runs-on: self-hosted
@@ -319,10 +319,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image nginx, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -333,7 +333,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -360,7 +360,7 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
 
 
   Apache-php8-laravel8-AMD64:
@@ -369,10 +369,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image Apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -383,7 +383,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -407,7 +407,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker-compose down
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
         echo "y" | docker image prune -a
   Apache-php8-laravel8-ARM64:
     runs-on: self-hosted
@@ -415,10 +415,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image Apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -429,7 +429,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -456,7 +456,7 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
 
   Apache-php8-laravel7-AMD64:
     runs-on: ubuntu-latest
@@ -471,7 +471,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -496,17 +496,17 @@ jobs:
       run:  |
         docker-compose down
         echo "y" | docker image prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
   Apache-php8-laravel7-ARM64:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image Apache, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -517,7 +517,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -544,7 +544,7 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
 
     
   Apache-php7-laravel8-AMD64:
@@ -560,7 +560,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -585,17 +585,17 @@ jobs:
       run:  |
         docker-compose down
         echo "y" | docker image prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
   Apache-php7-laravel8-ARM64:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image Apache, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -606,7 +606,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -633,7 +633,7 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
 
   Apache-php7-laravel7-AMD64:
     runs-on: ubuntu-latest
@@ -648,7 +648,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -673,17 +673,17 @@ jobs:
       run:  |
         docker-compose down
         echo "y" | docker image prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
   Apache-php7-laravel7-ARM64:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
     - name: File and folder check
       run:  |
-        while [ -d /tmp/laravel ]
+        while [ -d /tmp/lara ]
         do
           sleep 3s
-          sudo rm -rf /tmp/laravel
+          sudo rm -rf /tmp/lara
         done
     - name: Build the Docker image Apache, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
@@ -694,7 +694,7 @@ jobs:
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
-        APP_CODE_PATH_HOST: /tmp/laravel
+        APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -721,4 +721,4 @@ jobs:
         echo "password" | sudo -S whoami
         echo "y" | docker image prune -a
         echo "y" | docker system prune -a
-        sudo rm -rf /tmp/laravel
+        sudo rm -rf /tmp/lara
