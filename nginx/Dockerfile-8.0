@@ -35,14 +35,6 @@ ARG LARAVEL_VERSION
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
 
-#LARAVEL_INSTALL enable or disable
-ARG LARAVEL_INSTALL
-RUN if [ ${LARAVEL_INSTALL} = true ]; then \
-sed -i "s#{LARAVEL_INSTALL}#true#g" /docker-entrypoint.sh \
-;else \
-sed -i "s#{LARAVEL_INSTALL}#false#g" /docker-entrypoint.sh \
-;fi
-
 ARG INSTALL_ADDITIONAL_EXTENSIONS
 RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
 echo "No additional PHP extensions added" \

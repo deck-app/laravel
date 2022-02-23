@@ -55,15 +55,6 @@ user:
     hint: Check the box to display extension xdebug
     target:
       XDEBUG
-  laravel_install:
-    show_on_install: true
-    label:
-      DO NOT install Laravel
-    type:
-      checkbox
-    hint: Incase you have a Laravel project already installed at the selected path
-    target:
-      LARAVEL_INSTALL
     
   # mysql_version:
   #   label:

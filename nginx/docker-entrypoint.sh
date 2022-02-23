@@ -19,15 +19,11 @@ then
     fi
 
 fi
-if [[ {LARAVEL_INSTALL} = false ]] ;
-then
-    if [[ "$(ls -A "/var/www/")" ]] ;
+if [[ "$(ls -A "/var/www/")" ]] ;
     then
         echo "Directory is not Empty, Please deleted hiden file and directory"
     else
         composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
-
-    fi
 fi
 echo "Application environment variable check"
 if [[ ! -f ".env" ]] ;
