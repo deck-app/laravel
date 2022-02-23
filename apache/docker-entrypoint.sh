@@ -44,7 +44,7 @@ if [ "$(stat -c '%a' /var/www/storage)" == "apache:apache" ]
 then
   echo "Storage folder already write permissions"
 else
-  chown -R apache:apache /var/www/storage
+  chown -R apache:apache /var/www/storage 2> /dev/null
 fi
 kill -TERM `cat /var/run/apache2/httpd.pid`
 httpd -k graceful

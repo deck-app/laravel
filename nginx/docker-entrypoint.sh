@@ -45,7 +45,7 @@ if [ "$(stat -c '%a' /var/www/storage)" == "nobody:nobody" ]
 then
   echo "Storage folder already write permissions"
 else
-  chown -R nobody:nobody /var/www/storage
+  chown -R nobody:nobody /var/www/storage 2> /dev/null
 fi
 pkill -9 php
 nginx -s reload
