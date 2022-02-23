@@ -33,10 +33,9 @@ jobs:
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
       run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487)" != "200" ]]; 
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
         do 
-          sleep 5;
-          docker exec laravel_laravel_1 ls /var/www
+          sleep 10s
         done
     # - name: Root Path change
     #   run:  |
