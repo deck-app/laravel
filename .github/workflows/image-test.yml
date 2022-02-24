@@ -547,93 +547,93 @@ jobs:
         sudo rm -rf /tmp/lara
 
     
-  # Apache-php7-laravel8-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Build the Docker image Apache, php 7.4 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "y" | docker image prune -a
-  #       sudo rm -rf /tmp/lara
-  # Apache-php7-laravel8-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 7.4 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker image prune -a
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
+  Apache-php7-laravel8-AMD64:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image Apache, php 7.4 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: |
+        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  |
+        curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Apache-php7-laravel8-ARM64:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    - name: File and folder check
+      run:  |
+        while [ -d /tmp/lara ]
+        do
+          sleep 3s
+          sudo rm -rf /tmp/lara
+        done
+    - name: Build the Docker image Apache, php 7.4 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: |
+        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  |
+        curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker-compose down
+        echo "password" | sudo -S whoami
+        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
 
   # Apache-php7-laravel7-AMD64:
   #   runs-on: ubuntu-latest
