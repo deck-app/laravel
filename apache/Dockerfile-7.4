@@ -48,8 +48,8 @@ RUN chmod +x /docker-entrypoint.sh
 ARG USER_ID
 RUN if [ ${USER_ID} -gt 0 ]; then \
 	apk --no-cache add shadow && \
-    	usermod -u ${USER_ID} nobody && \
-    	groupmod -g ${USER_ID} nobody \
+    	usermod -u ${USER_ID} apache && \
+    	groupmod -g ${USER_ID} apache \
 ;fi
 RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
 
