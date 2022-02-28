@@ -44,12 +44,12 @@ apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
 
 # User ID defined
 ARG USER_ID
-RUN if [ ${USER_NAME} -gt 0 ]; then \
+RUN if [ ${USER_ID} -gt 0 ]; then \
 	apk --no-cache add shadow && \
-    	usermod -u ${USER_NAME} nobody && \
-    	groupmod -g ${USER_NAME} nobody \
+    	usermod -u ${USER_ID} nobody && \
+    	groupmod -g ${USER_ID} nobody \
 ;fi
-RUN sed -i "s#{USER_NAME}#${USER_NAME}#g" /docker-entrypoint.sh
+RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
 
 RUN chmod +x /docker-entrypoint.sh
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper
