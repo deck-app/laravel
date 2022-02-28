@@ -43,4 +43,15 @@ ARG LARAVEL_VERSION
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+# User ID defined
+ARG USER_ID
+RUN if [ ${USER_NAME} -gt 0 ]; then \
+	apk --no-cache add shadow && \
+    	usermod -u ${USER_NAME} nobody && \
+    	groupmod -g ${USER_NAME} nobody \
+;fi
+RUN sed -i "s#{USER_NAME}#${USER_NAME}#g" /docker-entrypoint.sh
+
+
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper

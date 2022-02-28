@@ -6,26 +6,26 @@ then
     cd /var/www/
     if [[ -d "/var/www/vendor" ]] ;
     then
-        echo "Composer optimize autoloader"
+        echo "Steps to use Composer optimise autoloader"
         composer update --prefer-dist --no-interaction --optimize-autoloader --no-dev
-        echo "Laravel - Clear All [Development]"
+        echo "Steps to Clear All Development inputs"
         php artisan view:clear
         php artisan route:clear
         php artisan config:clear
         php artisan clear-compiled
     else
-        echo "Composer vendor folder was not installed. Running $> composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev"
+        echo "If composer vendor folder is not installed follow the below steps"
         composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
     fi
 
 fi
 if [[ "$(ls -A "/var/www/")" ]] ;
     then
-        echo "Directory is not Empty, Please deleted hiden file and directory"
+        echo "If the Directory is not empty, please delete the hidden files and directory"
     else
         composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
 fi
-echo "Application environment variable check"
+echo "Steps to check application environment variable"
 if [[ ! -f ".env" ]] ;
 then
     echo ".env file not found"
@@ -37,11 +37,11 @@ fi
 php artisan key:generate
 cp /app/default.conf /etc/nginx/conf.d/default.conf
 rm -rf /var/preview
-if [ "$(stat -c '%a' /var/www/storage)" == "nobody:nobody" ]
+if [[ {USER_ID} -gt 0 ]] ;
 then
-  echo "Storage folder already write permissions"
+    chown -R {USER_NAME}:{USER_NAME} /var/www 2> /dev/null
 else
-  chown -R nobody:nobody /var/www/storage 2> /dev/null
+    chown -R nobody:nobody /var/www/storage 2> /dev/null
 fi
 pkill -9 php
 nginx -s reload

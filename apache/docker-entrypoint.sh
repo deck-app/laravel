@@ -6,26 +6,26 @@ then
     cd /var/www/
     if [[ -d "/var/www/vendor" ]] ;
     then
-        echo "Composer optimize autoloader"
+        echo "Steps to use Composer optimise autoloader"
         composer update --prefer-dist --no-interaction --optimize-autoloader --no-dev
-        echo "Laravel - Clear All [Development]"
+        echo "Steps to Clear All Development inputs"
         php artisan view:clear
         php artisan route:clear
         php artisan config:clear
         php artisan clear-compiled
     else
-        echo "Composer vendor folder was not installed. Running composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev"
+        echo "If composer vendor folder is not installed follow the below steps"
         composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
     fi
 
 fi
 if [[ "$(ls -A "/var/www/")" ]] ;
     then
-        echo "Directory is not Empty, Please deleted hiden file and directory"
+        echo "If the Directory is not empty, please delete the hidden files and directory"
     else
         composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
 fi
-echo "Application environment variable check"
+echo "Steps to check application environment variable"
 if [[ ! -f ".env" ]] ;
 then
     echo ".env file not found"
@@ -33,15 +33,15 @@ then
 else
     echo ".env file exit"
 fi
-echo "Application key set ...."
+echo "Steps to use application key set"
 php artisan key:generate
 cp /app/httpd.conf /etc/apache2/httpd.conf
 rm -rf /var/preview
-if [ "$(stat -c '%a' /var/www/storage)" == "apache:apache" ]
+if [[ {USER_ID} -gt 0 ]] ;
 then
-  echo "Storage folder already write permissions"
+    chown -R {USER_NAME}:{USER_NAME} /var/www 2> /dev/null
 else
-  chown -R apache:apache /var/www/storage 2> /dev/null
+    chown -R nobody:nobody /var/www/storage 2> /dev/null
 fi
 kill -TERM `cat /var/run/apache2/httpd.pid`
 httpd -k graceful

@@ -6,6 +6,7 @@ services:
       dockerfile: 'Dockerfile-${PHP_VERSION}'
       args:
         - 'BACK_END=${BACK_END}'
+        - 'USER_ID=${USER_ID}'
         - 'PHP_VERSION=${PHP_VERSION}'
         - 'DISPLAY_PHPERROR=${DISPLAY_PHPERROR}'
         - 'XDEBUG=${XDEBUG}'
