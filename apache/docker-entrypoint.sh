@@ -41,7 +41,7 @@ if [[ {USER_ID} -gt 0 ]] ;
 then
     chown -R {USER_ID}:{USER_ID} /var/www 2> /dev/null
 else
-    chown -R nobody:nobody /var/www/storage 2> /dev/null
+    chown -R apache:apache /var/www/storage 2> /dev/null
 fi
 kill -TERM `cat /var/run/apache2/httpd.pid`
 httpd -k graceful
