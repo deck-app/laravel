@@ -36,13 +36,11 @@ echo "No additional PHP extensions added" \
 apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
 ;fi
 
-RUN apk add php8-zip openssh mercurial tzdata openntpd
-RUN apk add --no-cache zip apache2 apache2-utils
+RUN apk add --no-cache zip apache2 apache2-utils php8-zip openssh mercurial tzdata openntpd
 ARG LARAVEL_VERSION
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
 
-RUN rm -f /var/run/apache2/httpd.pid
 RUN chmod +x /docker-entrypoint.sh
 
 # User ID defined
