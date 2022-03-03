@@ -46,11 +46,12 @@ RUN chmod +x /docker-entrypoint.sh
 
 # User ID defined
 ARG USER_ID
+ARG GROUP_ID
 RUN if [ ${USER_ID} -gt 0 ]; then \
 	apk --no-cache add shadow && \
-    	usermod -u ${USER_ID} apache && \
-    	groupmod -g ${USER_ID} apache \
+    	usermod -u ${USER_ID} -g ${GROUP_ID} apache \
 ;fi
 RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
+RUN sed -i "s#{GROUP_ID}#${GROUP_ID}#g" /docker-entrypoint.sh
 
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper

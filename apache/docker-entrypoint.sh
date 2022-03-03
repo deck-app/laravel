@@ -39,9 +39,9 @@ cp /app/httpd.conf /etc/apache2/httpd.conf
 rm -rf /var/preview
 if [[ {USER_ID} -gt 0 ]] ;
 then
-    chown -R {USER_ID}:{USER_ID} /var/www 2> /dev/null
+    chown -R {USER_ID}:{GROUP_ID} /var/www
 else
-    chown -R apache:apache /var/www/storage 2> /dev/null
+    chown -R apache:apache /var/www/storage
 fi
 
 httpd -k graceful

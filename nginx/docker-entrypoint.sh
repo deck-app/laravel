@@ -39,9 +39,9 @@ cp /app/default.conf /etc/nginx/conf.d/default.conf
 rm -rf /var/preview
 if [[ {USER_ID} -gt 0 ]] ;
 then
-    chown -R {USER_ID}:{USER_ID} /var/www 2> /dev/null
+    chown -R {USER_ID}:{GROUP_ID} /var/www
 else
-    chown -R nobody:nobody /var/www/storage 2> /dev/null
+    chown -R nobody:nobody /var/www/storage
 fi
 pkill -9 php
 nginx -s reload
