@@ -2,7 +2,7 @@ name: Laravel
 
 on:
   schedule:
-  - cron:  '30 5 * * *'
+  - cron:  '30 6 * * *'
   push:
     branches: [ master ]
   pull_request:
@@ -70,13 +70,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -85,7 +85,7 @@ jobs:
         done
     - name: Root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+        docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -93,7 +93,6 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
       
@@ -159,13 +158,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -174,7 +173,7 @@ jobs:
         done
     - name: Root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+        docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -182,7 +181,6 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
     
@@ -247,13 +245,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -262,7 +260,7 @@ jobs:
         done
     - name: Root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+        docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -270,7 +268,6 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
@@ -335,13 +332,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -350,7 +347,7 @@ jobs:
         done
     - name: Root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+        docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -358,7 +355,6 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
@@ -431,13 +427,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -446,7 +442,7 @@ jobs:
         done
     - name: root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+        docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -454,7 +450,6 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
@@ -519,13 +514,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -534,7 +529,7 @@ jobs:
         done
     - name: Root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+        docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -542,7 +537,6 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
@@ -608,13 +602,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -623,7 +617,7 @@ jobs:
         done
     - name: Root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+        docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -631,7 +625,6 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
@@ -696,13 +689,13 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: PHP version check
-      run:  docker exec laravel_laravel_1 php -v
+      run:  docker exec laravel-laravel-1 php -v
     - name: Mongodb driver check
-      run:  docker exec laravel_laravel_1 php -m | grep mongo
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
-      run: docker exec laravel_laravel_1 php -m | grep mysqli
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer
+      run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -711,7 +704,7 @@ jobs:
         done
     - name: Root path check
       run: |
-        docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+        docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
       run:  |
         curl -i http://localhost:53487/
@@ -719,6 +712,5 @@ jobs:
       run:  |
         docker-compose down
         echo "password" | sudo -S whoami
-        echo "y" | docker image prune -a
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
