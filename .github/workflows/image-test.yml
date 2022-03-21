@@ -29,6 +29,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -75,6 +79,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
@@ -117,6 +125,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -163,6 +175,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
@@ -204,6 +220,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -250,6 +270,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
@@ -291,6 +315,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -337,6 +365,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
@@ -386,6 +418,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -432,6 +468,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
@@ -473,6 +513,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -519,6 +563,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
@@ -561,6 +609,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -607,6 +659,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
@@ -648,6 +704,10 @@ jobs:
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Check laravel install or not
@@ -694,6 +754,10 @@ jobs:
       run:  docker exec laravel-laravel-1 php -m | grep mongo
     - name: Mysql Driver check
       run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
     - name: Check laravel install or not
