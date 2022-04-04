@@ -1,0 +1,56 @@
+FROM ghcr.io/deck-app/nginx:v8.1
+LABEL maintainer Naba Das <hello@get-deck.com>
+
+# Persistent runtime dependencies
+# Example RUN apk add --no-cache php81-openssl php81-sysvmsg php81-curl
+RUN apk add --no-cache rsync
+
+RUN mkdir -p /app
+RUN mkdir -p /var/preview
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /app/default.conf
+RUN wget -O /var/preview/index.html https://raw.githubusercontent.com/deck-app/stack-preview-screen/main/install/index.html
+RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/nginx/conf.d/default.conf
+RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/default.conf
+RUN apk add --no-cache zip
+
+WORKDIR /var/www
+#PHP display error enable or disable
+COPY php_ini/php.ini /etc/php81/php.ini
+ARG DISPLAY_PHPERROR
+RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
+sed -i "s#{DISPLAY}#On#g" /etc/php81/php.ini \
+;else \
+sed -i "s#{DISPLAY}#Off#g" /etc/php81/php.ini \
+;fi
+
+#Xdebug enable or disable
+ARG XDEBUG
+RUN if [ ${XDEBUG} = true ]; then \
+apk add php81-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php81/php.ini \
+;fi
+
+ARG LARAVEL_VERSION
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
+
+ARG INSTALL_ADDITIONAL_EXTENSIONS
+RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
+echo "No additional PHP extensions added" \
+;else \
+apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
+;fi
+
+# User ID defined
+ARG USER_ID
+ARG GROUP_ID
+RUN if [ ${USER_ID} -gt 0 ]; then \
+	apk --no-cache add shadow && \
+    	usermod -u ${USER_ID} -g ${GROUP_ID} nobody \
+;fi
+RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
+RUN sed -i "s#{GROUP_ID}#${GROUP_ID}#g" /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
+CMD /docker-entrypoint.sh & /sbin/runit-wrapper
