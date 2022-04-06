@@ -20,15 +20,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Build the image with php 8.1 Laravel 7 and nginx
-        run: docker-compose build
-        env:
-          PHP_VERSION: "8.1"
-          LARAVEL_VERSION: 7
-          BACK_END: nginx
-          LARAVEL_INSTALL: true
-          XDEBUG: true
-          DISPLAY_PHPERROR: true
       - name: Build the image with php 8.0 Laravel 8 and nginx
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -70,15 +61,6 @@ jobs:
         env:
           PHP_VERSION: "8.1"
           LARAVEL_VERSION: 8
-          BACK_END: apache
-          LARAVEL_INSTALL: true
-          XDEBUG: true
-          DISPLAY_PHPERROR: true
-      - name: Build the image with php 8.1 Laravel 7 and apache
-        run: docker-compose build
-        env:
-          PHP_VERSION: "8.1"
-          LARAVEL_VERSION: 7
           BACK_END: apache
           LARAVEL_INSTALL: true
           XDEBUG: true
