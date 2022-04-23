@@ -11,6 +11,12 @@ on:
 jobs:
   Nginx-php81-laravel8-AMD64:
     runs-on: ubuntu-latest
+    container:
+      image: mariadb:latest
+      env:
+        MARIADB_DATABASE: test
+        MARIADB_USER: test
+        MARIADB_PASSWORD: test
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image nginx, php 8.1 and laravel 8
@@ -23,16 +29,6 @@ jobs:
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
-    - name: Build the Docker image Mariadb for connection testing
-      run: |
-          image: mariadb:latest
-          env:
-            MARIADB_DATABASE: test
-            MARIADB_USER: test
-            MARIADB_PASSWORD: test
-          ports:
-            - 3306/tcp
-          options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Container check
