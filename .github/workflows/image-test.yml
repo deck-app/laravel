@@ -11,12 +11,6 @@ on:
 jobs:
   Nginx-php81-laravel8-AMD64:
     runs-on: ubuntu-latest
-    container:
-      image: mariadb:latest
-      env:
-        MARIADB_DATABASE: test
-        MARIADB_USER: test
-        MARIADB_PASSWORD: test
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image nginx, php 8.1 and laravel 8
@@ -29,6 +23,8 @@ jobs:
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=test  mariadb:latest
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Container check
