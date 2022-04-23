@@ -33,17 +33,18 @@ then
 else
     echo ".env file exit"
 fi
-echo "Steps to use application key set"
-php artisan key:generate
-cp /app/httpd.conf /etc/apache2/httpd.conf
-rm -rf /var/preview
-if [[ {USER_ID} -gt 0 ]] ;
-then
-    chown -R {USER_ID}:{GROUP_ID} /var/www
-else
-    chown -R apache:apache /var/www/storage
-fi
 
-httpd -k graceful
+php artisan key:generate
+if [[ {BACK_END} = nginx ]] ;
+then
+    cp /app/default.conf /etc/nginx/conf.d/default.conf
+    nginx -s reload
+    chown -R nobody:nobody /var/www 2> /dev/null
+else
+    cp /app/httpd.conf /etc/apache2/httpd.conf
+    httpd -k graceful
+    chown -R apache:apache /var/www 2> /dev/null
+fi
+rm -rf /var/preview
 
 exec "$@"

@@ -29,7 +29,7 @@ user:
   backend_ws:
       disabled_post_install: true
       label:
-        Laravel Version
+        Laravel version
       hint:
         Select a laravel version
       type:
@@ -37,6 +37,7 @@ user:
       values:
         - 7
         - 8
+        - 9
       target:
         LARAVEL_VERSION
 
