@@ -65,6 +65,7 @@ jobs:
         curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
+        docker stop mariadb
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
