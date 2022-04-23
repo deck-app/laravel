@@ -24,7 +24,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb -p 3306:3306 --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=test  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=test  mariadb:latest
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Container check
