@@ -23,8 +23,21 @@ jobs:
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image Mariadb for connection testing
+      services:
+        mariadb:
+          image: mariadb:latest
+          env:
+            MARIADB_DATABASE: test
+            MARIADB_USER: test
+            MARIADB_PASSWORD: test
+          ports:
+            - 3306/tcp
+          options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
+    - name: Container check
+      run: docker ps
     - name: Mongodb driver check
       run:  docker exec laravel_laravel_1 php -m | grep mongo
     - name: Mysql Driver check
