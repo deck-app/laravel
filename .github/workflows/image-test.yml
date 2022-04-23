@@ -24,8 +24,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image Mariadb for connection testing
-      services:
-        mariadb:
+      run: |
           image: mariadb:latest
           env:
             MARIADB_DATABASE: test
