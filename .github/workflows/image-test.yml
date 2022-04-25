@@ -152,21 +152,20 @@ jobs:
 
   
 
-  Laravel8-7-AMD64:
+  Laravel8-AMD64:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.0', '7.4']
+        php-version: ['7.4', '8.0', '8.1']
         back: ['nginx', 'apache']
-        laravel-version: ['8', '7']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel ${{matrix.laravel-version}}
+    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
         PHP_VERSION: ${{matrix.php-version}}
-        LARAVEL_VERSION: ${{matrix.laravel-version}}
+        LARAVEL_VERSION: 8
         BACK_END: ${{matrix.back}}
         XDEBUG: true
         DISPLAY_PHPERROR: true
@@ -207,7 +206,7 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
@@ -228,16 +227,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.0', '7.4']
+        php-version: ['7.4', '8.0', '8.1']
         back: ['nginx', 'apache']
-        laravel-version: ['8', '7']
+        laravel-version: 8
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel ${{matrix.laravel-version}}
+    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
         PHP_VERSION: ${{matrix.php-version}}
-        LARAVEL_VERSION: ${{matrix.laravel-version}}
+        LARAVEL_VERSION: 8
         BACK_END: ${{matrix.back}}
         XDEBUG: true
         DISPLAY_PHPERROR: true
@@ -278,7 +277,7 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8.x
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
@@ -298,21 +297,21 @@ jobs:
 
 
 
-  Laravel8-AMD64:
+  
+  Laravel7-AMD64:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1']
+        php-version: ['7.4', '8.0']
         back: ['nginx', 'apache']
-        laravel-version: ['8']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel ${{matrix.laravel-version}}
+    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
         PHP_VERSION: ${{matrix.php-version}}
-        LARAVEL_VERSION: ${{matrix.laravel-version}}
+        LARAVEL_VERSION: 7
         BACK_END: ${{matrix.back}}
         XDEBUG: true
         DISPLAY_PHPERROR: true
@@ -353,7 +352,7 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.7.x
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
@@ -374,16 +373,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1']
+        php-version: ['7.4', '8.0', '8.1']
         back: ['nginx', 'apache']
-        laravel-version: ['8']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel ${{matrix.laravel-version}}
+    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
         PHP_VERSION: ${{matrix.php-version}}
-        LARAVEL_VERSION: ${{matrix.laravel-version}}
+        LARAVEL_VERSION: 7
         BACK_END: ${{matrix.back}}
         XDEBUG: true
         DISPLAY_PHPERROR: true
@@ -424,7 +422,7 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.7.x
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
