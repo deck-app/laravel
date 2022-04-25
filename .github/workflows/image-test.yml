@@ -25,6 +25,8 @@ jobs:
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
       run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
     - name: Mongodb driver check
@@ -51,11 +53,19 @@ jobs:
             echo "Waiting for database connection..."
             sleep 2
         done
-    - name: Download Database information with env / download priconfigure env
+    - name: Download Database information with env / download preconfigure env
       run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
     - name: Enverment file contan check
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Laravel test
       run:  curl -i http://localhost:53487/
