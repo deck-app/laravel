@@ -50,8 +50,6 @@ jobs:
         do 
           sleep 10s
         done
-    - name: Root path check
-      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -122,8 +120,6 @@ jobs:
         do 
           sleep 10s
         done
-    - name: Root path check
-      run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -198,8 +194,6 @@ jobs:
         do 
           sleep 10s
         done
-    - name: Root path check
-      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -271,8 +265,6 @@ jobs:
         do 
           sleep 10s
         done
-    - name: Root path check
-      run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -348,8 +340,6 @@ jobs:
         do 
           sleep 10s
         done
-    - name: Root path check
-      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -421,8 +411,6 @@ jobs:
         do 
           sleep 10s
         done
-    - name: Root path check
-      run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
