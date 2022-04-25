@@ -25,7 +25,7 @@ jobs:
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
       run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
-    - name: Build the Docker image mariadb
+    - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
       run:  docker exec laravel_laravel_1 php -v
@@ -72,6 +72,7 @@ jobs:
     - name: Destroy container and file
       run:  |
         docker stop mariadb
+        docker stop mongo
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
