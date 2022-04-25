@@ -222,7 +222,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Laravel8-7-ARM64:
+  Laravel8-ARM64:
     runs-on: self-hosted
     strategy:
       fail-fast: false
@@ -368,12 +368,12 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Laravel8-ARM64:
+  Laravel7-ARM64:
     runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.4', '8.0', '8.1']
+        php-version: ['7.4', '8.0']
         back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
