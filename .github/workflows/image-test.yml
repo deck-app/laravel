@@ -229,7 +229,6 @@ jobs:
       matrix:
         php-version: ['7.4', '8.0', '8.1']
         back: ['nginx', 'apache']
-        laravel-version: 8
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 8
