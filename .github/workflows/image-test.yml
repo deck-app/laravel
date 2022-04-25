@@ -9,13 +9,12 @@ on:
     branches: [ master ]
 
 jobs:
-  Laravel:
+  Nginx-AMD64:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         php-version: ['8.1', '8.0']
-        back-end: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image nginx, php 8.1 and laravel 9
@@ -23,7 +22,7 @@ jobs:
       env:
         PHP_VERSION: ${{matrix.php-version}}
         LARAVEL_VERSION: 9
-        BACK_END: ${{matrix.back-end}}
+        BACK_END: nginx
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
