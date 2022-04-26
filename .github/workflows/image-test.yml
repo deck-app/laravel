@@ -593,7 +593,7 @@ jobs:
         sudo rm -rf /tmp/lara
 
     
-    Nginx-php8.1-laravel8-AMD64:
+  Nginx-php8.1-laravel8-AMD64:
     runs-on: ubuntu-latest
     # strategy:
     #   fail-fast: false
@@ -885,7 +885,7 @@ jobs:
         sudo rm -rf /tmp/lara
 
 
-    Nginx-php8.0-laravel8-AMD64:
+  Nginx-php8.0-laravel8-AMD64:
     runs-on: ubuntu-latest
     # strategy:
     #   fail-fast: false
