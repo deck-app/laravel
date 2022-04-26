@@ -9,21 +9,21 @@ on:
     branches: [ master ]
 
 jobs:
-  Laravel9-AMD64:
+  Nginx-php8.1-laravel9-AMD64:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.1', '8.0']
-        back: ['nginx', 'apache']
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 9
+    - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
-        PHP_VERSION: ${{matrix.php-version}}
+        PHP_VERSION: "8.1"
         LARAVEL_VERSION: 9
-        BACK_END: ${{matrix.back}}
+        BACK_END: nginx
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
@@ -50,6 +50,8 @@ jobs:
         do 
           sleep 10s
         done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -70,12 +72,8 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    # - name: Laravel test
-    #   run:  |
-    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/)" != "200" ]]; 
-    #     do 
-    #       sleep 10s
-    #     done
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -83,21 +81,21 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Laravel9-ARM64:
+  Nginx-php8.1-laravel9-AMD64:
     runs-on: self-hosted
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.1', '8.0']
-        back: ['nginx', 'apache']
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 9
+    - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
-        PHP_VERSION: ${{matrix.php-version}}
+        PHP_VERSION: "8.1"
         LARAVEL_VERSION: 9
-        BACK_END: ${{matrix.back}}
+        BACK_END: nginx
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
@@ -124,6 +122,8 @@ jobs:
         do 
           sleep 10s
         done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -144,8 +144,8 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    # - name: Laravel test
-    #   run:  curl -i http://localhost:53487/
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -154,23 +154,22 @@ jobs:
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
 
-  
 
-  Laravel8-AMD64:
+  Apache-php8.1-laravel9-AMD64:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['7.4', '8.0', '8.1']
-        back: ['nginx', 'apache']
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 8
+    - name: Build the Docker image apache, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
-        PHP_VERSION: ${{matrix.php-version}}
-        LARAVEL_VERSION: 8
-        BACK_END: ${{matrix.back}}
+        PHP_VERSION: "8.1"
+        LARAVEL_VERSION: 9
+        BACK_END: apache
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
@@ -197,6 +196,446 @@ jobs:
         do 
           sleep 10s
         done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Apache-php8.1-laravel9-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 8.1 and laravel 9
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.1"
+        LARAVEL_VERSION: 9
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+
+  Nginx-php8.0-laravel9-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 8.0 and laravel 9
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 9
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Nginx-php8.0-laravel9-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 8.0 and laravel 9
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 9
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+
+  Apache-php8.0-laravel9-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 8.0 and laravel 9
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 9
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Apache-php8.0-laravel9-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 8.0 and laravel 9
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 9
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+    
+    Nginx-php8.1-laravel8-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 8.1 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.1"
+        LARAVEL_VERSION: 8
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -217,8 +656,8 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    # - name: Laravel test
-    #   run:  curl -i http://localhost:53487/
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -226,21 +665,21 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Laravel8-ARM64:
+  Nginx-php8.1-laravel8-AMD64:
     runs-on: self-hosted
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['7.4', '8.0', '8.1']
-        back: ['nginx', 'apache']
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 8
+    - name: Build the Docker image nginx, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
-        PHP_VERSION: ${{matrix.php-version}}
+        PHP_VERSION: "8.1"
         LARAVEL_VERSION: 8
-        BACK_END: ${{matrix.back}}
+        BACK_END: nginx
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
@@ -267,6 +706,8 @@ jobs:
         do 
           sleep 10s
         done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -287,8 +728,8 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    # - name: Laravel test
-    #   run:  curl -i http://localhost:53487/
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -298,24 +739,21 @@ jobs:
         sudo rm -rf /tmp/lara
 
 
-
-
-  
-  Laravel7-AMD64:
+  Apache-php8.1-laravel8-AMD64:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['7.4', '8.0']
-        back: ['nginx', 'apache']
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 7
+    - name: Build the Docker image apache, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
-        PHP_VERSION: ${{matrix.php-version}}
-        LARAVEL_VERSION: 7
-        BACK_END: ${{matrix.back}}
+        PHP_VERSION: "8.1"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
@@ -342,6 +780,8 @@ jobs:
         do 
           sleep 10s
         done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -355,15 +795,15 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.7.x
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    # - name: Laravel test
-    #   run:  curl -i http://localhost:53487/
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -371,21 +811,21 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Laravel7-ARM64:
+  Apache-php8.1-laravel8-AMD64:
     runs-on: self-hosted
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['7.4', '8.0']
-        back: ['nginx', 'apache']
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image ${{matrix.back}}, php ${{matrix.php-version}} and laravel 7
+    - name: Build the Docker image apache, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
-        PHP_VERSION: ${{matrix.php-version}}
-        LARAVEL_VERSION: 7
-        BACK_END: ${{matrix.back}}
+        PHP_VERSION: "8.1"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
         XDEBUG: true
         DISPLAY_PHPERROR: true
         SERVER_ROOT:  /var/www/public
@@ -412,6 +852,740 @@ jobs:
         do 
           sleep 10s
         done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+
+    Nginx-php8.0-laravel8-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 8.0 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 8
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Nginx-php8.0-laravel8-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 8.0 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 8
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+
+  Apache-php8.0-laravel8-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 8.0 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Apache-php8.0-laravel8-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 8.0 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+
+
+  Nginx-php7.4-laravel8-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 7.4 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 8
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Nginx-php7.4-laravel8-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 7.4 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 8
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+
+  Apache-php7.4-laravel8-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 7.4 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Apache-php7.4-laravel8-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 7.4 and laravel 8
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 8
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+
+
+
+  Nginx-php8.0-laravel7-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 8.0 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 7
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.7.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Nginx-php8.0-laravel7-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 8.0 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 7
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -432,8 +1606,8 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    # - name: Laravel test
-    #   run:  curl -i http://localhost:53487/
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -441,885 +1615,442 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-    
+
+
+  Apache-php8.0-laravel7-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 8.0 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 7
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.7.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Apache-php8.0-laravel7-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 8.0 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "8.0"
+        LARAVEL_VERSION: 7
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.7.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
   
 
-  # Nginx-php8-laravel8-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image nginx, php 8.0 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "y" | docker image prune -a
-  #       sudo rm -rf /tmp/lara
-  # Nginx-php8-laravel8-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image nginx, php 8.0 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
-      
 
-  # Nginx-php8-laravel7-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Build the Docker image nginx, php 8.0 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       sudo rm -rf /tmp/lara
-  #       echo "y" | docker image prune -a
-  # Nginx-php8-laravel7-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image nginx, php 8.0 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
-    
-  # Nginx-php7-laravel8-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Build the Docker image nginx, php 7.4 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       sudo rm -rf /tmp/lara
-  #       echo "y" | docker image prune -a
-  # Nginx-php7-laravel8-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image nginx, php 7.4 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
+  Nginx-php7.4-laravel7-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 7.4 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 7
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.7.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Nginx-php7.4-laravel7-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image nginx, php 7.4 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 7
+        BACK_END: nginx
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.7.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
 
-  # Nginx-php7-laravel7-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Build the Docker image nginx, php 7.4 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       sudo rm -rf /tmp/lara
-  #       echo "y" | docker image prune -a
-  # Nginx-php7-laravel7-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image nginx, php 7.4 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: nginx
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
 
-  # Apache-php81-laravel8-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 8.1 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.1"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       sudo rm -rf /tmp/lara
-  #       echo "y" | docker image prune -a
-  # Apache-php81-laravel8-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 8.1 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.1"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
-  
-  
-
-  # Apache-php8-laravel8-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 8.0 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       sudo rm -rf /tmp/lara
-  #       echo "y" | docker image prune -a
-  # Apache-php8-laravel8-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 8.0 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
-
-  # Apache-php8-laravel7-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Build the Docker image Apache, php 8.0 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "y" | docker image prune -a
-  #       sudo rm -rf /tmp/lara
-  # Apache-php8-laravel7-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 8.0 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "8.0"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
-
-    
-  # Apache-php7-laravel8-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Build the Docker image Apache, php 7.4 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "y" | docker image prune -a
-  #       sudo rm -rf /tmp/lara
-  # Apache-php7-laravel8-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 7.4 and laravel 8
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 8
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
-
-  # Apache-php7-laravel7-AMD64:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Build the Docker image Apache, php 7.4 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel_laravel_1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel_laravel_1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel_laravel_1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel_laravel_1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel_laravel_1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel_laravel_1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "y" | docker image prune -a
-  #       sudo rm -rf /tmp/lara
-  # Apache-php7-laravel7-ARM64:
-  #   runs-on: self-hosted
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: File and folder check
-  #     run:  |
-  #       while [ -d /tmp/lara ]
-  #       do
-  #         sleep 3s
-  #         sudo rm -rf /tmp/lara
-  #       done
-  #   - name: Build the Docker image Apache, php 7.4 and laravel 7
-  #     run: docker-compose -f "docker-compose.yml" up -d --build
-  #     env:
-  #       PHP_VERSION: "7.4"
-  #       LARAVEL_VERSION: 7
-  #       BACK_END: apache
-  #       XDEBUG: true
-  #       DISPLAY_PHPERROR: true
-  #       SERVER_ROOT:  /var/www/public
-  #       APP_CODE_PATH_HOST: /tmp/lara
-  #   - name: PHP version check
-  #     run:  docker exec laravel-laravel-1 php -v
-  #   - name: Mongodb driver check
-  #     run:  docker exec laravel-laravel-1 php -m | grep mongo
-  #   - name: Mysql Driver check
-  #     run: docker exec laravel-laravel-1 php -m | grep mysqli
-  #   - name: Git Version check
-  #     run: docker exec laravel-laravel-1 git --version
-  #   - name: Curl Version check
-  #     run: docker exec laravel-laravel-1 curl --version
-  #   - name: Composer test
-  #     run: docker exec laravel-laravel-1 composer
-  #   - name: Check laravel install or not
-  #     run:  |
-  #       while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-  #       do 
-  #         sleep 10s
-  #       done
-  #   - name: Root path check
-  #     run: |
-  #       docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
-  #   - name: Laravel test
-  #     run:  |
-  #       curl -i http://localhost:53487/
-  #   - name: Destroy container and file
-  #     run:  |
-  #       docker-compose down
-  #       echo "password" | sudo -S whoami
-  #       echo "y" | docker system prune -a
-  #       sudo rm -rf /tmp/lara
+  Apache-php7.4-laravel7-AMD64:
+    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 7.4 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 7
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel_laravel_1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel_laravel_1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel_laravel_1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel_laravel_1 git --version
+    - name: Curl Version check
+      run: docker exec laravel_laravel_1 curl --version
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel_laravel_1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.7.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel_laravel_1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
+  Apache-php7.4-laravel7-AMD64:
+    runs-on: self-hosted
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     php-version: ['8.1', '8.0']
+    #     back: ['nginx', 'apache']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image apache, php 7.4 and laravel 7
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        PHP_VERSION: "7.4"
+        LARAVEL_VERSION: 7
+        BACK_END: apache
+        XDEBUG: true
+        DISPLAY_PHPERROR: true
+        SERVER_ROOT:  /var/www/public
+        APP_CODE_PATH_HOST: /tmp/lara
+    - name: Build the Docker image mariadb
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+    - name: Build the Docker image Mongodb
+      run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+    - name: PHP version check
+      run:  docker exec laravel-laravel-1 php -v
+    - name: Mongodb driver check
+      run:  docker exec laravel-laravel-1 php -m | grep mongo
+    - name: Mysql Driver check
+      run: docker exec laravel-laravel-1 php -m | grep mysqli
+    - name: Git Version check
+      run: docker exec laravel-laravel-1 git --version
+    - name: Curl Version check
+      run: docker exec laravel-laravel-1 curl --version
+    - name: Composer test
+      run: docker exec laravel-laravel-1 composer
+    - name: Check laravel install or not
+      run:  |
+        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+        do 
+          sleep 10s
+        done
+    - name: Root path check
+      run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Verify MariaDB running from host, create Database and show Database
+      run: |
+        while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+            echo "Waiting for database connection..."
+            sleep 2
+        done
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+    - name: Enverment file contan check
+      run: docker exec laravel-laravel-1 cat /var/www/.env
+    - name: Check Laravel to mariadb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Install integraion library
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.7.x
+    - name: Download Database information with env / download preconfigure env
+      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    - name: Download Database config file in configuration
+      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    - name: Check Laravel to Mongodb connection status
+      run: docker exec laravel-laravel-1 php artisan migrate
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
+    - name: Destroy container and file
+      run:  |
+        docker stop mariadb
+        docker stop mongo
+        docker-compose down
+        echo "y" | docker image prune -a
+        sudo rm -rf /tmp/lara
