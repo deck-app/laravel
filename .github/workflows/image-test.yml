@@ -52,6 +52,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -72,8 +74,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -124,6 +124,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -144,8 +146,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -198,6 +198,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -218,8 +220,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -270,6 +270,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -290,8 +292,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -344,6 +344,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -364,8 +366,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -416,6 +416,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -436,8 +438,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -490,6 +490,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -510,8 +512,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -562,6 +562,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -582,8 +584,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -636,6 +636,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -656,8 +658,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -708,6 +708,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -728,8 +730,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -782,6 +782,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -802,8 +804,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -854,6 +854,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -874,8 +876,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -928,6 +928,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -948,8 +950,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1000,6 +1000,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1020,8 +1022,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1074,6 +1074,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1094,8 +1096,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1146,6 +1146,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1166,8 +1168,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1221,6 +1221,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1241,8 +1243,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1293,6 +1293,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1313,8 +1315,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1367,6 +1367,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1387,8 +1389,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1439,6 +1439,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1459,8 +1461,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1514,6 +1514,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1534,8 +1536,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1586,6 +1586,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1606,8 +1608,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1660,6 +1660,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1680,8 +1682,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1732,6 +1732,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1752,8 +1754,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1807,6 +1807,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1827,8 +1829,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1879,6 +1879,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1899,8 +1901,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -1953,6 +1953,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1973,8 +1975,6 @@ jobs:
       run: docker exec laravel_laravel_1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -2025,6 +2025,8 @@ jobs:
         done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
+    - name: Laravel test
+      run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -2045,8 +2047,6 @@ jobs:
       run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
