@@ -79,7 +79,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Nginx-php81-laravel9-ARM64:
     runs-on: self-hosted
@@ -151,7 +151,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -225,7 +225,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Apache-php81-laravel9-ARM64:
     runs-on: self-hosted
@@ -297,7 +297,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -371,7 +371,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Nginx-php80-laravel9-ARM64:
     runs-on: self-hosted
@@ -443,7 +443,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -517,7 +517,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Apache-php80-laravel9-ARM64:
     runs-on: self-hosted
@@ -589,7 +589,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
     
@@ -663,7 +663,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Nginx-php81-laravel8-ARM64:
     runs-on: self-hosted
@@ -735,7 +735,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -809,7 +809,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Apache-php81-laravel8-ARM64:
     runs-on: self-hosted
@@ -881,7 +881,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -955,7 +955,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Nginx-php80-laravel8-ARM64:
     runs-on: self-hosted
@@ -1027,7 +1027,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -1101,7 +1101,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Apache-php80-laravel8-ARM64:
     runs-on: self-hosted
@@ -1173,7 +1173,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -1248,7 +1248,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Nginx-php74-laravel8-ARM64:
     runs-on: self-hosted
@@ -1320,7 +1320,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -1394,7 +1394,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Apache-php74-laravel8-ARM64:
     runs-on: self-hosted
@@ -1466,7 +1466,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -1541,7 +1541,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Nginx-php80-laravel7-ARM64:
     runs-on: self-hosted
@@ -1613,7 +1613,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -1687,7 +1687,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Apache-php80-laravel7-ARM64:
     runs-on: self-hosted
@@ -1759,7 +1759,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   
 
@@ -1834,7 +1834,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Nginx-php74-laravel7-ARM64:
     runs-on: self-hosted
@@ -1906,7 +1906,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
 
 
@@ -1980,7 +1980,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
   Apache-php74-laravel7-ARM64:
     runs-on: self-hosted
@@ -2052,5 +2052,5 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
-        echo "y" | docker image prune -a
+        echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
