@@ -18,6 +18,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -90,6 +92,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -164,6 +168,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -236,6 +242,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -310,6 +318,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -382,6 +392,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -456,6 +468,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -528,6 +542,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -602,6 +618,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -674,6 +692,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -748,6 +768,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -820,6 +842,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -894,6 +918,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -966,6 +992,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1040,6 +1068,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1112,6 +1142,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1187,6 +1219,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1259,6 +1293,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1333,6 +1369,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1405,6 +1443,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1480,6 +1520,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1552,6 +1594,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1626,6 +1670,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1698,6 +1744,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1773,6 +1821,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1845,6 +1895,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image nginx, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1919,6 +1971,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1991,6 +2045,8 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
+    - name: Deleted container 
+      run: echo "y" | docker system prune -a
     - name: Build the Docker image apache, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
