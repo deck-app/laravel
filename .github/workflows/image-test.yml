@@ -81,7 +81,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Nginx-php8.1-laravel9-AMD64:
+  Nginx-php8.1-laravel9-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -227,7 +227,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Apache-php8.1-laravel9-AMD64:
+  Apache-php8.1-laravel9-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -373,7 +373,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Nginx-php8.0-laravel9-AMD64:
+  Nginx-php8.0-laravel9-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -519,7 +519,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Apache-php8.0-laravel9-AMD64:
+  Apache-php8.0-laravel9-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -665,7 +665,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Nginx-php8.1-laravel8-AMD64:
+  Nginx-php8.1-laravel8-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -811,7 +811,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Apache-php8.1-laravel8-AMD64:
+  Apache-php8.1-laravel8-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -957,7 +957,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Nginx-php8.0-laravel8-AMD64:
+  Nginx-php8.0-laravel8-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -1103,7 +1103,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Apache-php8.0-laravel8-AMD64:
+  Apache-php8.0-laravel8-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -1250,7 +1250,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Nginx-php7.4-laravel8-AMD64:
+  Nginx-php7.4-laravel8-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -1396,7 +1396,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Apache-php7.4-laravel8-AMD64:
+  Apache-php7.4-laravel8-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -1543,7 +1543,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Nginx-php8.0-laravel7-AMD64:
+  Nginx-php8.0-laravel7-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -1689,7 +1689,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Apache-php8.0-laravel7-AMD64:
+  Apache-php8.0-laravel7-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -1836,7 +1836,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Nginx-php7.4-laravel7-AMD64:
+  Nginx-php7.4-laravel7-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
@@ -1982,7 +1982,7 @@ jobs:
         docker-compose down
         echo "y" | docker image prune -a
         sudo rm -rf /tmp/lara
-  Apache-php7.4-laravel7-AMD64:
+  Apache-php7.4-laravel7-ARM64:
     runs-on: self-hosted
     # strategy:
     #   fail-fast: false
