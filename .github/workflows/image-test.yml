@@ -71,7 +71,9 @@ jobs:
     - name: Check Laravel to Mongodb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Laravel test
-      run:  curl -i http://localhost:53487/
+      run:  |
+        docker exec laravel_laravel_1 ls -la /var/www/
+        curl -i http://localhost:53487/
     # - name: Destroy container and file
     #   run:  |
     #     docker stop mariadb
