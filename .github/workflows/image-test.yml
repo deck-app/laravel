@@ -96,18 +96,11 @@ jobs:
     #     back: ['nginx', 'apache']
     steps:
     - uses: actions/checkout@v2
-    - name: Docker container exits or not check list
-      run:  |
-        if [ "$(docker ps -aq -f status=exited -f name=mariadb)" ]; then
-          docker stop $(docker ps -a -q)
-          echo "y" | docker system prune -a
-        fi
-
-    - name: Deleted container 
-      run: |
-        docker stop $(docker ps -a -q)
-        echo "y" | docker system prune -a
-        sudo rm -rf /tmp/lara
+    # - name: Deleted container 
+    #   run: |
+    #     docker stop $(docker ps -a -q)
+    #     echo "y" | docker system prune -a
+    #     sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
