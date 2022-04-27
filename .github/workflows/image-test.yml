@@ -72,7 +72,7 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
@@ -103,11 +103,11 @@ jobs:
           echo "y" | docker system prune -a
         fi
 
-    # - name: Deleted container 
-    #   run: |
-    #     docker stop $(docker ps -a -q)
-    #     echo "y" | docker system prune -a
-    #     sudo rm -rf /tmp/lara
+    - name: Deleted container 
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -157,7 +157,7 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel-laravel-1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb 3.8.x
+      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
