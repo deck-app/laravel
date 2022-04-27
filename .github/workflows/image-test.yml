@@ -81,6 +81,8 @@ jobs:
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Destroy container and file
       run:  |
+        docker stop mariadb
+        docker stop mongo
         docker-compose down
         docker stop $(docker ps -a -q)
         echo "y" | docker system prune -a
@@ -157,6 +159,8 @@ jobs:
       run: docker exec laravel-laravel-1 php artisan migrate
     - name: Destroy container and file
       run:  |
+        docker stop mariadb
+        docker stop mongo
         docker-compose down
         docker stop $(docker ps -a -q)
         echo "y" | docker system prune -a
