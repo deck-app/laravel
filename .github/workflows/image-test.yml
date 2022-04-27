@@ -19,7 +19,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -93,7 +96,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -169,7 +175,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -243,7 +252,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.1 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -319,7 +331,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -393,7 +408,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -469,7 +487,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -519,7 +540,7 @@ jobs:
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb
+      run: docker exec laravel_laravel_1 composer require jenssegers/mongodb 3.8.x
     - name: Download Database information with env / download preconfigure env
       run: docker exec laravel_laravel_1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
@@ -543,7 +564,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.0 and laravel 9
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -619,7 +643,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -693,7 +720,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -769,7 +799,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -843,7 +876,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.1 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -919,7 +955,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -993,7 +1032,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1069,7 +1111,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1143,7 +1188,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.0 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1220,7 +1268,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1247,16 +1298,16 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
-    - name: Root path check
-      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
+    # - name: Root path check
+    #   run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    # - name: Laravel test
+    #   run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1294,7 +1345,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1370,7 +1424,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1444,7 +1501,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 7.4 and laravel 8
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1521,7 +1581,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1595,7 +1658,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1671,7 +1737,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1745,7 +1814,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 8.0 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1822,7 +1894,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1849,16 +1924,16 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
-    - name: Root path check
-      run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
-    - name: Laravel test
-      run:  curl -i http://localhost:53487/
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
+    # - name: Root path check
+    #   run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
+    # - name: Laravel test
+    #   run:  curl -i http://localhost:53487/
     - name: Verify MariaDB running from host, create Database and show Database
       run: |
         while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
@@ -1896,7 +1971,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image nginx, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -1972,7 +2050,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -2046,7 +2127,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Deleted container 
-      run: echo "y" | docker system prune -a
+      run: |
+        docker stop $(docker ps -a -q)
+        echo "y" | docker system prune -a
+        sudo rm -rf /tmp/lara
     - name: Build the Docker image apache, php 7.4 and laravel 7
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
