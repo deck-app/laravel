@@ -49,12 +49,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -127,12 +127,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -207,12 +207,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -285,12 +285,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -365,12 +365,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -443,12 +443,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -523,12 +523,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -601,12 +601,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -681,12 +681,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -759,12 +759,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -839,12 +839,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -917,12 +917,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -997,12 +997,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -1075,12 +1075,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -1155,12 +1155,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -1233,12 +1233,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -1392,12 +1392,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -1472,12 +1472,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -1631,12 +1631,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -1789,12 +1789,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -2026,12 +2026,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/nginx/conf.d/default.conf
     - name: Laravel test
@@ -2106,12 +2106,12 @@ jobs:
       run: docker exec laravel_laravel_1 curl --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel_laravel_1 cat /etc/apache2/httpd.conf
     - name: Laravel test
@@ -2184,12 +2184,12 @@ jobs:
       run: docker exec laravel-laravel-1 curl --version
     - name: Composer test
       run: docker exec laravel-laravel-1 composer
-    - name: Check laravel install or not
-      run:  |
-        while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
-        do 
-          sleep 10s
-        done
+    # - name: Check laravel install or not
+    #   run:  |
+    #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+    #     do 
+    #       sleep 10s
+    #     done
     - name: Root path check
       run: docker exec laravel-laravel-1 cat /etc/apache2/httpd.conf
     - name: Laravel test
