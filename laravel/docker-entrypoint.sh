@@ -35,6 +35,8 @@ else
 fi
 
 php artisan key:generate
+npm install
+npm run dev
 if [[ {BACK_END} = nginx ]] ;
 then
     cp /app/default.conf /etc/nginx/conf.d/default.conf
@@ -45,6 +47,7 @@ else
     httpd -k graceful
     chown -R apache:apache /var/www 2> /dev/null
 fi
+
 rm -rf /var/preview
 
 exec "$@"
