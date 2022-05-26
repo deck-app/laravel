@@ -35,8 +35,16 @@ else
 fi
 
 php artisan key:generate
-npm install
-npm run dev
+if [[ {BACK_END} = nginx ]] ;
+then
+    npm install
+    npm run dev
+else
+    apk add yarn
+    yarn install
+    yarn run dev
+fi
+
 if [[ {BACK_END} = nginx ]] ;
 then
     cp /app/default.conf /etc/nginx/conf.d/default.conf
