@@ -43,6 +43,8 @@ else
     apk add yarn
     yarn install
     yarn run dev
+    npm install
+    npm run dev
 fi
 
 if [[ {BACK_END} = nginx ]] ;
