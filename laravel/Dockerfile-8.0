@@ -53,6 +53,12 @@ echo "No additional PHP extensions added" \
 apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
 ;fi
 
+## Linux permission issue
+ARG USER_ID
+ARG GROUP_ID
+RUN apk --no-cache add shadow
+RUN if [[ ${BACK_END} = nginx ]] ; then usermod -u ${USER_ID} nobody && groupmod -g ${GROUP_ID} nobody ; else usermod -u ${USER_ID} apache && groupmod -g ${GROUP_ID} apache ; fi
+
 RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
 RUN sed -i "s#{GROUP_ID}#${GROUP_ID}#g" /docker-entrypoint.sh
 RUN sed -i "s#{BACK_END}#${BACK_END}#g" /docker-entrypoint.sh
