@@ -56,8 +56,25 @@ apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
 ## Linux permission issue
 ARG USER_ID
 ARG GROUP_ID
-RUN apk --no-cache add shadow
+RUN apk --no-cache add shadow sudo
 RUN if [[ ${BACK_END} = nginx ]] ; then usermod -u ${USER_ID} nobody && groupmod -g ${GROUP_ID} nobody ; else usermod -u ${USER_ID} apache && groupmod -g ${GROUP_ID} apache ; fi
+
+
+COPY login.sh /etc/profile.d/login.sh
+RUN if [ ${BACK_END} = nginx ]; then \
+sed -i "s#{USER}#nobody#g" /etc/profile.d/login.sh \
+;else \
+sed -i "s#{USER}#apache#g" /etc/profile.d/login.sh \
+;fi
+RUN chmod +x /etc/profile.d/login.sh
+
+# sudo command without password
+RUN if [ ${BACK_END} = nginx ]; then \
+echo "nobody ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
+;else \
+echo "apache ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
+;fi
+RUN composer config --global process-timeout 2000
 
 RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
 RUN sed -i "s#{GROUP_ID}#${GROUP_ID}#g" /docker-entrypoint.sh

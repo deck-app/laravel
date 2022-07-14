@@ -34,19 +34,6 @@ else
     echo ".env file exit"
 fi
 
-php artisan key:generate
-if [[ {BACK_END} = nginx ]] ;
-then
-    npm install
-    npm run dev
-else
-    apk add yarn
-    yarn install
-    yarn run dev
-    npm install
-    npm run dev
-fi
-
 if [[ {BACK_END} = nginx ]] ;
 then
     cp /app/default.conf /etc/nginx/conf.d/default.conf
@@ -59,5 +46,18 @@ else
 fi
 
 rm -rf /var/preview
+
+php artisan key:generate
+if [[ {BACK_END} = nginx ]] ;
+then
+    npm install
+    npm run dev
+else
+    apk add yarn
+    yarn install
+    yarn run dev
+    npm install
+    npm run dev
+fi
 
 exec "$@"
