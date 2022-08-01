@@ -23,6 +23,7 @@ if [[ "$(ls -A "/var/www/")" ]] ;
     then
         echo "If the Directory is not empty, please delete the hidden files and directory"
     else
+        composer config --global process-timeout 6000
         composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
 fi
 echo "Steps to check application environment variable"
@@ -33,31 +34,16 @@ then
 else
     echo ".env file exit"
 fi
-
-if [[ {BACK_END} = nginx ]] ;
-then
-    cp /app/default.conf /etc/nginx/conf.d/default.conf
-    nginx -s reload
-    chown -R nobody:nobody /var/www 2> /dev/null
-else
-    cp /app/httpd.conf /etc/apache2/httpd.conf
-    httpd -k graceful
-    chown -R apache:apache /var/www 2> /dev/null
-fi
-
+cp /app/httpd.conf /etc/apache2/httpd.conf
+httpd -k graceful
+chown -R apache:apache /var/www 2> /dev/null
 rm -rf /var/preview
 
 php artisan key:generate
-if [[ {BACK_END} = nginx ]] ;
-then
-    npm install
-    npm run dev
-else
-    apk add yarn
-    yarn install
-    yarn run dev
-    npm install
-    npm run dev
-fi
+apk add yarn
+yarn install
+yarn run dev
+npm install
+npm run dev
 
 exec "$@"
