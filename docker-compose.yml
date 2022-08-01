@@ -2,7 +2,7 @@ version: '3'
 services:
   laravel:
     build:
-      context: 'laravel\${BACK_END}'
+      context: 'laravel/${BACK_END}'
       dockerfile: 'Dockerfile-${PHP_VERSION}'
       args:
         - 'BACK_END=${BACK_END}'
