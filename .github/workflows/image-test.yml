@@ -162,19 +162,19 @@ jobs:
             sleep 2
         done
     - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      run: docker exec laravel-laravel-1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
     - name: Enverment file contan check
       run: docker exec laravel-laravel-1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
-      run: docker exec laravel-laravel-1 php artisan migrate
+      run: docker exec laravel-laravel-1 sudo php artisan migrate
     - name: Install integraion library
-      run: docker exec laravel-laravel-1 composer require jenssegers/mongodb
+      run: docker exec laravel-laravel-1 sudo composer require jenssegers/mongodb
     - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel-laravel-1 wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+      run: docker exec laravel-laravel-1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
     - name: Download Database config file in configuration
-      run: docker exec laravel-laravel-1 wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+      run: docker exec laravel-laravel-1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel-laravel-1 php artisan migrate
+      run: docker exec laravel-laravel-1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
