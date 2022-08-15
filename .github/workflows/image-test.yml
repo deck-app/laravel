@@ -54,7 +54,7 @@ jobs:
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Composer test
-      run: docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
+      run: docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^9.0 .
     # - name: Check laravel install or not
     #   run:  |
     #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
