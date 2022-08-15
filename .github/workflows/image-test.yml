@@ -56,7 +56,7 @@ jobs:
     - name: Laravel Instalation
       run: docker exec laravel_laravel_1 sudo composer create-project --prefer-dist laravel/laravel:^9.0 .
     - name: Laravel permission
-      run: docker exec laravel_laravel_1 sudo chmod 777 /var/www/storage
+      run: docker exec laravel_laravel_1 sudo chmod -R 777 /var/www/storage
     # - name: Check laravel install or not
     #   run:  |
     #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
