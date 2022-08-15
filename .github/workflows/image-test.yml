@@ -54,9 +54,9 @@ jobs:
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
     - name: Laravel Instalation
-      run: docker exec laravel_laravel_1 sh /docker-entrypoint.sh
-    # - name: Laravel permission
-    #   run: docker exec laravel_laravel_1 sudo chowm nobody:nobody /var/www/
+      run: docker exec laravel_laravel_1 sudo composer create-project --prefer-dist laravel/laravel:^9.0 .
+    - name: Laravel permission
+      run: docker exec laravel_laravel_1 sudo chowm -R nobody:nobody /var/www/
     # - name: Check laravel install or not
     #   run:  |
     #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
