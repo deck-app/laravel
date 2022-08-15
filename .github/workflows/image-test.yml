@@ -53,6 +53,8 @@ jobs:
       run: docker exec laravel_laravel_1 npm --version
     - name: Composer test
       run: docker exec laravel_laravel_1 composer
+    - name: Composer test
+      run: docker exec laravel_laravel_1 composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
     # - name: Check laravel install or not
     #   run:  |
     #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
@@ -74,7 +76,7 @@ jobs:
     - name: Enverment file contan check
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
-      run: docker exec laravel_laravel_1 php artisan migrate
+      run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Install integraion library
       run: docker exec laravel_laravel_1 composer require jenssegers/mongodb
     - name: Download Database information with env / download preconfigure env
@@ -82,7 +84,7 @@ jobs:
     - name: Download Database config file in configuration
       run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
     - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 php artisan migrate
+      run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
