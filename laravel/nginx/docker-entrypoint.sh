@@ -7,15 +7,15 @@ then
     if [[ -d "/var/www/vendor" ]] ;
     then
         echo "Steps to use Composer optimise autoloader"
-        composer update --prefer-dist --no-interaction --optimize-autoloader --no-dev
+        sudo composer update --prefer-dist --no-interaction --optimize-autoloader --no-dev
         echo "Steps to Clear All Development inputs"
-        php artisan view:clear
-        php artisan route:clear
-        php artisan config:clear
-        php artisan clear-compiled
+        sudo php artisan view:clear
+        sudo php artisan route:clear
+        sudo php artisan config:clear
+        sudo php artisan clear-compiled
     else
         echo "If composer vendor folder is not installed follow the below steps"
-        composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
+        sudo composer install --prefer-dist --no-interaction --optimize-autoloader --no-dev
     fi
 
 fi
@@ -23,26 +23,24 @@ if [[ "$(ls -A "/var/www/")" ]] ;
     then
         echo "If the Directory is not empty, please delete the hidden files and directory"
     else
-        composer config --global process-timeout 6000
-        composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
+        sudo composer config --global process-timeout 6000
+        sudo composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
 fi
 echo "Steps to check application environment variable"
 if [[ ! -f ".env" ]] ;
 then
     echo ".env file not found"
-    cp .env.example .env
+   sudo cp .env.example .env
 else
     echo ".env file exit"
 fi
 
-cp /app/default.conf /etc/nginx/conf.d/default.conf
+sudo cp /app/default.conf /etc/nginx/conf.d/default.conf
 nginx -s reload
-chown -R nobody:nobody /var/www 2> /dev/null
+sudo chown -R nobody:nobody /var/www 2> /dev/null
 
-rm -rf /var/preview
+sudo rm -rf /var/preview 2> /dev/null
 
-php artisan key:generate
-npm install
-npm run dev
+sudo php artisan key:generate
 
 exec "$@"
