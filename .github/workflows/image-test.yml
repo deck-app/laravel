@@ -55,6 +55,8 @@ jobs:
       run: docker exec laravel_laravel_1 composer
     - name: Check file
       run: docker exec laravel_laravel_1 ls -la /var/www/
+    - name: Composer test
+      run: docker exec laravel_laravel_1 logs
     - name: Check laravel install or not
       run:  |
         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
