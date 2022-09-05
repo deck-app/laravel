@@ -1,6 +1,6 @@
 #!/bin/bash
 set +x
-
+if sudo ping -q -w 1 -c 1 8.8.8.8 > /dev/null; then
 if [[ -f "/var/www/composer.json" ]] ;
 then
     cd /var/www/
@@ -25,6 +25,9 @@ if [[ "$(ls -A "/var/www/")" ]] ;
     else
         sudo composer config --global process-timeout 6000
         sudo composer create-project --prefer-dist laravel/laravel:^{LARAVEL_VERSION}.0 .
+        if [ $? != 0 ]; then
+        sh /docker-entrypoint.sh 
+        fi
 fi
 echo "Steps to check application environment variable"
 if [[ ! -f ".env" ]] ;
@@ -44,3 +47,7 @@ sudo rm -rf /var/preview 2> /dev/null
 sudo php artisan key:generate
 
 exec "$@"
+
+else
+echo "Internet Not Working Check Your Internet Connection or network";
+fi

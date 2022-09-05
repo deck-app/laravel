@@ -40,7 +40,7 @@ echo "No additional PHP extensions added" \
 apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
 ;fi
 
-RUN apk add php8-zip php8-pdo_mysql
+RUN apk add php8-zip php8-pdo_mysql php8-gd
 RUN apk add zip
 ARG LARAVEL_VERSION
 COPY docker-entrypoint.sh /docker-entrypoint.sh
