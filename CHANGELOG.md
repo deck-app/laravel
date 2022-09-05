@@ -1,14 +1,17 @@
 # Change Log
 
 All notable changes of this project will be documented in this file.
+
 [v2.1.6] - 2022-09-05
 -----------------------------------------------------------------------------------
+Issue
+* Failed to download laravel/laravel from dist curl error.
 Added
-* **Internet** - Check internet working or not in container
-* **Checklist** - Check  docker-entrypoint Curl or other failed then try loop 
+* **Internet** - Check internet working or not in container.
 * **Changelog** - Add to changelog.md file.
 Fix
-Added super-user to all the commands  ([f696df1](https://github.com/deck-app/laravel/commit/f696df114835387ad4ea596a5c9170799f5c9e35)
+* Added super-user to all the commands  ([f696df1](https://github.com/deck-app/laravel/commit/f696df114835387ad4ea596a5c9170799f5c9e35)).
+* Execute for loop in docker-entrypoint.
 
 [v2.1.4] - 2022-08-01
 -----------------------------------------------------------------------------------
