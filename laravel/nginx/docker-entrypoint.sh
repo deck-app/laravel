@@ -1,6 +1,6 @@
 #!/bin/bash
 set +x
-
+if [[ $(curl -Is https://laravel.com | head -n 1 | cut -d ' ' -f 2 ) == "200" ]]; then
 if [[ -f "/var/www/composer.json" ]] ;
 then
     cd /var/www/
@@ -47,3 +47,6 @@ sudo rm -rf /var/preview 2> /dev/null
 sudo php artisan key:generate
 
 exec "$@"
+else
+    echo "Internet not working check your Internet connection or network";
+fi
