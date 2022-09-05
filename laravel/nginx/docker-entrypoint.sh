@@ -1,6 +1,6 @@
 #!/bin/bash
 set +x
-if sudo ping -q -w 1 -c 1 8.8.8.8 > /dev/null; then
+
 if [[ -f "/var/www/composer.json" ]] ;
 then
     cd /var/www/
@@ -47,7 +47,3 @@ sudo rm -rf /var/preview 2> /dev/null
 sudo php artisan key:generate
 
 exec "$@"
-
-else
-echo "Internet Not Working Check Your Internet Connection or network";
-fi
