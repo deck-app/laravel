@@ -6,9 +6,11 @@ All notable changes of this project will be documented in this file.
 -----------------------------------------------------------------------------------
 Issue
 * Failed to download laravel/laravel from dist curl error.
+
 Added
 * **Internet** - Check internet working or not in container.
 * **Changelog** - Add to changelog.md file.
+
 Fix
 * Added super-user to all the commands  ([f696df1](https://github.com/deck-app/laravel/commit/f696df114835387ad4ea596a5c9170799f5c9e35)).
 * Execute for loop in docker-entrypoint.
