@@ -1089,7 +1089,7 @@ jobs:
         docker exec laravel_laravel_1 sudo rm -rf /var/www/.env.example
         docker exec laravel_laravel_1 sudo rm -rf /var/www/.gitattributes
         docker exec laravel_laravel_1 sudo rm -rf /var/www/.gitignore
-#        docker exec laravel_laravel_1 sudo rm -rf /var/www/.git
+        docker exec laravel_laravel_1 sudo rm -rfi /var/www/.*
     - name: git clone new project
       run: docker exec laravel_laravel_1 git clone https://DockerStacks@bitbucket.org/DockerStacks/laravel-ecommerce-l8p8.git .
     - name: Install project
