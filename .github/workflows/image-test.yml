@@ -1084,9 +1084,9 @@ jobs:
     - name: Delete All file
       run: |
         docker exec laravel_laravel_1 sudo rm -rf /var/www/*
-        docker exec laravel_laravel_1 sudo rm -rf /var/www/.*
+#        docker exec laravel_laravel_1 sudo rm -rf /var/www/.*
     - name: git clone new project
-      run: docker exec laravel_laravel_1 git clone https://DockerStacks@bitbucket.org/DockerStacks/laravel-ecommerce-l8p8.git
+      run: docker exec laravel_laravel_1 git clone https://DockerStacks@bitbucket.org/DockerStacks/laravel-ecommerce-l8p8.git .
     - name: Install project
       run: |
         docker exec laravel_laravel_1 composer install
