@@ -1085,8 +1085,7 @@ jobs:
       run: docker exec laravel_laravel_1 git clone https://DockerStacks@bitbucket.org/DockerStacks/laravel-ecommerce-l8p8.git /var/www/public/ecom
     - name: Build the Docker image mariadb
       run: |
-        docker stop mariadb
-        docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+        docker run --detach --name mariadb1 --network=laravel_default -p 3308:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
     - name: Install project
       run: |
         docker exec laravel_laravel_1 composer install --working-dir=/var/www/public/ecom/
@@ -1104,6 +1103,7 @@ jobs:
         docker stop mariadb
         docker stop mongo
         docker-compose down
+        docker stop mariadb1
         docker stop $(docker ps -a -q)
         echo "y" | docker system prune -a
         sudo rm -rf /tmp/lara
