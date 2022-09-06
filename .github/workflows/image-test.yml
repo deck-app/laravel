@@ -1093,7 +1093,7 @@ jobs:
     - name: Database and app key setup
       run: |
         docker exec laravel_laravel_1 php artisan migrate --path=/var/www/public/ecom/
-#        docker exec laravel_laravel_1 php artisan key:generate --working-dir=/var/www/public/ecom/
+        docker exec laravel_laravel_1 cd /var/www/public/ecom/ && php artisan key:generate
     - name: Application Test
       run: curl -i http://localhost:53487/ecom/public
     - name: Destroy container and file
