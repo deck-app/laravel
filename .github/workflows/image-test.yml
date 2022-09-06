@@ -1089,7 +1089,7 @@ jobs:
         docker exec laravel_laravel_1 npm install --working-dir=/var/www/public/ecom/
         docker exec laravel_laravel_1 npm run dev --working-dir=/var/www/public/ecom/
     - name: ENV file set
-      run: docker exec laravel_laravel_1 cp /var/www/public/ecom/(1).env /var/www/public/ecom/.env
+      run: docker exec laravel_laravel_1 cp /var/www/public/ecom/.env_back /var/www/public/ecom/.env
     - name: Database and app key setup
       run: |
         docker exec laravel_laravel_1 php artisan migrate --path=/var/www/public/ecom/
