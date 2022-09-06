@@ -1097,13 +1097,15 @@ jobs:
         docker exec laravel_laravel_1 cat /var/www/public/ecom/.env
     - name: Database and app key setup
       run: |
-        docker exec laravel_laravel_1 php artisan migrate --path=/var/www/public/ecom/
+        docker exec laravel_laravel_1 php /var/www/public/ecom/artisan migrate
+        docker exec laravel_laravel_1 php /var/www/public/ecom/artisan key:generate
     - name: Application Test
       run: curl -i http://localhost:53487/ecom/public/
     - name: Destroy container and file
       run:  |
         docker stop mariadb
         docker stop mongo
+        docker stop mariadb1
         docker-compose down
         docker stop $(docker ps -a -q)
         echo "y" | docker system prune -a
