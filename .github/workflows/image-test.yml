@@ -1085,15 +1085,15 @@ jobs:
       run: docker exec laravel_laravel_1 git clone https://DockerStacks@bitbucket.org/DockerStacks/laravel-ecommerce-l8p8.git /var/www/public/ecom
     - name: Install project
       run: |
-        docker exec laravel_laravel_1 /var/www/public/ecom/composer install
-        docker exec laravel_laravel_1 /var/www/public/ecom/npm install
-        docker exec laravel_laravel_1 /var/www/public/ecom/npm run dev
+        docker exec laravel_laravel_1 composer install --working-dir=/var/www/public/ecom/
+        docker exec laravel_laravel_1 npm install --working-dir=/var/www/public/ecom/
+        docker exec laravel_laravel_1 npm run dev --working-dir=/var/www/public/ecom/
     - name: ENV file set
       run: docker exec laravel_laravel_1 cp /var/www/public/ecom/.env_back /var/www/public/ecom/.env
     - name: Database and app key setup
       run: |
-        docker exec laravel_laravel_1 /var/www/public/ecom/php artisan migrate
-        docker exec laravel_laravel_1 /var/www/public/ecom/php artisan key:generate
+        docker exec laravel_laravel_1 php artisan migrate --working-dir=/var/www/public/ecom/
+        docker exec laravel_laravel_1 php artisan key:generate --working-dir=/var/www/public/ecom/
     - name: Application Test
       run: curl -i http://localhost:53487/ecom/public
     - name: Destroy container and file
