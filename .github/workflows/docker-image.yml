@@ -11,11 +11,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Build the image with php 8.1 Laravel 10 and nginx
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.1"
+          LARAVEL_VERSION: 10
+          BACK_END: nginx
+          LARAVEL_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+      - name: Build the image with php 8.1 Laravel 9 and nginx
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.1"
+          LARAVEL_VERSION: 9
+          BACK_END: nginx
+          LARAVEL_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
       - name: Build the image with php 8.1 Laravel 8 and nginx
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
           PHP_VERSION: "8.1"
           LARAVEL_VERSION: 8
+          BACK_END: nginx
+          LARAVEL_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+      - name: Build the image with php 8.0 Laravel 9 and nginx
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.0"
+          LARAVEL_VERSION: 9
           BACK_END: nginx
           LARAVEL_INSTALL: true
           XDEBUG: true
@@ -56,11 +83,38 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
+      - name: Build the image with php 8.1 Laravel 10 and apache
+        run: docker-compose build
+        env:
+          PHP_VERSION: "8.1"
+          LARAVEL_VERSION: 10
+          BACK_END: apache
+          LARAVEL_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+      - name: Build the image with php 8.1 Laravel 9 and apache
+        run: docker-compose build
+        env:
+          PHP_VERSION: "8.1"
+          LARAVEL_VERSION: 9
+          BACK_END: apache
+          LARAVEL_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
       - name: Build the image with php 8.1 Laravel 8 and apache
         run: docker-compose build
         env:
           PHP_VERSION: "8.1"
           LARAVEL_VERSION: 8
+          BACK_END: apache
+          LARAVEL_INSTALL: true
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+      - name: Build the image with php 8.0 Laravel 9 and apache
+        run: docker-compose build
+        env:
+          PHP_VERSION: "8.0"
+          LARAVEL_VERSION: 9
           BACK_END: apache
           LARAVEL_INSTALL: true
           XDEBUG: true
