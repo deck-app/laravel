@@ -1,0 +1,77 @@
+ARG BACK_END
+FROM ghcr.io/deck-app/apache:v8.2
+LABEL maintainer Naba Das <hello@get-deck.com>
+
+ARG LARAVEL_VERSION
+RUN mkdir -p /app
+RUN mkdir -p /var/preview
+COPY httpd.conf /app/httpd.conf
+COPY httpd.conf /etc/apache2/httpd.conf
+RUN wget -O /var/preview/index.html https://raw.githubusercontent.com/deck-app/stack-preview-screen/main/install/index.html
+
+ARG SERVER_ROOT
+RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/apache2/httpd.conf
+RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/httpd.conf
+
+# Persistent runtime dependencies
+# Example RUN apk add --no-cache php82-openssl php82-sysvmsg php82-curl
+
+WORKDIR /var/www
+
+COPY php.ini /etc/php82/php.ini
+ARG DISPLAY_PHPERROR
+RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
+sed -i "s#{DISPLAY}#On#g" /etc/php82/php.ini \
+;else \
+sed -i "s#{DISPLAY}#Off#g" /etc/php82/php.ini \
+;fi
+
+#Xdebug enable or disable
+ARG XDEBUG
+RUN if [ ${XDEBUG} = true ]; then \
+apk add php82-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php82/php.ini \
+;fi
+
+ARG INSTALL_ADDITIONAL_EXTENSIONS
+RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
+echo "No additional PHP extensions added" \
+;else \
+apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
+;fi
+
+RUN apk add php82-zip php82-pdo_mysql php82-gd
+RUN apk add zip
+ARG LARAVEL_VERSION
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+## Linux permission issue
+ARG USER_ID
+ARG GROUP_ID
+RUN apk --no-cache add shadow sudo
+RUN usermod -u ${USER_ID} apache && groupmod -g ${GROUP_ID} apache
+
+# sudo command without password
+RUN echo "apache ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers 
+RUN composer config --global process-timeout 6000
+
+RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
+RUN sed -i "s#{GROUP_ID}#${GROUP_ID}#g" /docker-entrypoint.sh
+
+## apache2 permission issue
+RUN usermod --home /home apache
+RUN touch /env
+RUN chown -R apache:apache /env
+RUN chown -R apache:apache /home
+RUN chown -R apache:apache /var/preview/
+RUN chown -R apache:apache /usr/sbin/httpd
+RUN chown -R apache:apache /etc/service/apache
+RUN chown -R apache:apache /sbin/
+RUN chown -R apache:apache /etc/service/
+RUN chown -R apache:apache /var/run/apache2
+RUN chown -R apache:apache /etc/apache2
+RUN chown -R apache:apache /var/log/apache2
+USER apache
+CMD /docker-entrypoint.sh & /sbin/runit-wrapper
