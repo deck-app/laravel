@@ -2,7 +2,7 @@ name: Laravel
 
 on:
   schedule:
-  - cron:  '30 6 * * *'
+  - cron:  '31 00 * * *'
   push:
     branches: [ master ]
   pull_request:
@@ -34,7 +34,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -77,14 +77,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -118,7 +118,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -159,14 +159,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -202,7 +202,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -245,14 +245,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -286,7 +286,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -327,14 +327,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -370,7 +370,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -454,7 +454,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -538,7 +538,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -579,14 +579,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -620,7 +620,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -661,14 +661,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -703,7 +703,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -744,14 +744,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -785,7 +785,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -826,14 +826,14 @@ jobs:
       run: docker exec laravel_laravel_1 cat /var/www/.env
     - name: Check Laravel to mariadb connection status
       run: docker exec laravel_laravel_1 sudo php artisan migrate
-    - name: Install integraion library
-      run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb:dev-master
-    - name: Download Database information with env / download preconfigure env
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
-    - name: Download Database config file in configuration
-      run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
-    - name: Check Laravel to Mongodb connection status
-      run: docker exec laravel_laravel_1 sudo php artisan migrate
+    # - name: Install integraion library
+    #   run: docker exec laravel_laravel_1 sudo composer require jenssegers/mongodb
+    # - name: Download Database information with env / download preconfigure env
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.env
+    # - name: Download Database config file in configuration
+    #   run: docker exec laravel_laravel_1 sudo wget -O /var/www/config/database.php https://raw.githubusercontent.com/nabad600/image-test-file/main/mongo.conf
+    # - name: Check Laravel to Mongodb connection status
+    #   run: docker exec laravel_laravel_1 sudo php artisan migrate
     - name: Destroy container and file
       run:  |
         docker stop mariadb
@@ -869,7 +869,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -951,7 +951,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1035,7 +1035,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1117,7 +1117,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1201,7 +1201,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1283,7 +1283,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1367,7 +1367,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1449,7 +1449,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1533,7 +1533,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1615,7 +1615,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1699,7 +1699,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1802,7 +1802,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1886,7 +1886,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -1968,7 +1968,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2053,7 +2053,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2135,7 +2135,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2219,7 +2219,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2301,7 +2301,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2386,7 +2386,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2468,7 +2468,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2552,7 +2552,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2634,7 +2634,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2719,7 +2719,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2801,7 +2801,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2885,7 +2885,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
@@ -2967,7 +2967,7 @@ jobs:
         SERVER_ROOT:  /var/www/public
         APP_CODE_PATH_HOST: /tmp/lara
     - name: Build the Docker image mariadb
-      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  mariadb:latest
+      run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
     - name: Build the Docker image Mongodb
       run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
     - name: PHP version check
