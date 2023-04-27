@@ -18,30 +18,25 @@ RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/default.conf
 # Example RUN apk add --no-cache php8-openssl php8-sysvmsg php8-curl
 
 WORKDIR /var/www
+ENV PHP_VERSION=8
+ADD package.sh /package.sh
 
-COPY php.ini /etc/php8/php.ini
+COPY php.ini /etc/php${PHP_VERSION}/php.ini
 ARG DISPLAY_PHPERROR
 RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
-sed -i "s#{DISPLAY}#On#g" /etc/php8/php.ini \
+sed -i "s#{DISPLAY}#On#g" /etc/php${PHP_VERSION}/php.ini \
 ;else \
-sed -i "s#{DISPLAY}#Off#g" /etc/php8/php.ini \
+sed -i "s#{DISPLAY}#Off#g" /etc/php${PHP_VERSION}/php.ini \
 ;fi
 
 #Xdebug enable or disable
 ARG XDEBUG
 RUN if [ ${XDEBUG} = true ]; then \
-apk add php8-pecl-xdebug \
-&& echo "zend_extension=xdebug" >> /etc/php8/php.ini \
+apk add php${PHP_VERSION}-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php${PHP_VERSION}/php.ini \
 ;fi
 
-ARG INSTALL_ADDITIONAL_EXTENSIONS
-RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
-echo "No additional PHP extensions added" \
-;else \
-apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
-;fi
-
-RUN apk add php8-zip php8-pdo_mysql php8-gd
+RUN apk add php${PHP_VERSION}-zip php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-gd
 RUN apk add zip
 ARG LARAVEL_VERSION
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -64,18 +59,25 @@ RUN sed -i "s#{BACK_END}#${BACK_END}#g" /docker-entrypoint.sh
 
 ## nobody permission issue
 RUN usermod --home /home nobody
-COPY www.conf /etc/php8/php-fpm.d/www.conf
+COPY www.conf /etc/php${PHP_VERSION}/php-fpm.d/www.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN touch /env
 RUN chown -R nobody:nobody /env
 RUN chown -R nobody:nobody /home
 RUN chown -R nobody:nobody /var/preview/
 RUN chown -R nobody:nobody /sbin/
-RUN chown -R nobody:nobody /etc/php8/
+RUN chown -R nobody:nobody /etc/php${PHP_VERSION}/
 RUN chown -R nobody:nobody /etc/service/
 RUN chown -R nobody:nobody /var/run/
 RUN chown -R nobody:nobody /var/log/
 RUN chown -R nobody:nobody /var/lib/nginx
 RUN chown -R nobody:nobody /etc/nginx
+ARG INSTALL_ADDITIONAL_EXTENSIONS
+ENV INSTALL_ADDITIONAL_EXTENSIONS=$INSTALL_ADDITIONAL_EXTENSIONS
+RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
+echo "No additional PHP extensions added" \
+;else \
+bash /package.sh \
+;fi
 USER nobody
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper

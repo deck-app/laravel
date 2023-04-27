@@ -17,30 +17,26 @@ RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/httpd.conf
 # Example RUN apk add --no-cache php82-openssl php82-sysvmsg php82-curl
 
 WORKDIR /var/www
+ENV PHP_VERSION=82
+ADD package.sh /package.sh
 
-COPY php.ini /etc/php82/php.ini
+COPY php.ini /etc/php${PHP_VERSION}/php.ini
 ARG DISPLAY_PHPERROR
 RUN if [ ${DISPLAY_PHPERROR} = true ]; then \
-sed -i "s#{DISPLAY}#On#g" /etc/php82/php.ini \
+sed -i "s#{DISPLAY}#On#g" /etc/php${PHP_VERSION}/php.ini \
 ;else \
-sed -i "s#{DISPLAY}#Off#g" /etc/php82/php.ini \
+sed -i "s#{DISPLAY}#Off#g" /etc/php${PHP_VERSION}/php.ini \
 ;fi
 
 #Xdebug enable or disable
 ARG XDEBUG
 RUN if [ ${XDEBUG} = true ]; then \
-apk add php82-pecl-xdebug \
-&& echo "zend_extension=xdebug" >> /etc/php82/php.ini \
+apk add php${PHP_VERSION}-pecl-xdebug \
+&& echo "zend_extension=xdebug" >> /etc/php${PHP_VERSION}/php.ini \
 ;fi
 
-ARG INSTALL_ADDITIONAL_EXTENSIONS
-RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
-echo "No additional PHP extensions added" \
-;else \
-apk add --no-cache ${INSTALL_ADDITIONAL_EXTENSIONS} \
-;fi
 
-RUN apk add php82-zip php82-pdo_mysql php82-gd
+RUN apk add php${PHP_VERSION}-zip php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-gd
 RUN apk add zip
 ARG LARAVEL_VERSION
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -73,5 +69,12 @@ RUN chown -R apache:apache /etc/service/
 RUN chown -R apache:apache /var/run/apache2
 RUN chown -R apache:apache /etc/apache2
 RUN chown -R apache:apache /var/log/apache2
+ARG INSTALL_ADDITIONAL_EXTENSIONS
+ENV INSTALL_ADDITIONAL_EXTENSIONS=$INSTALL_ADDITIONAL_EXTENSIONS
+RUN if [ -z "$INSTALL_ADDITIONAL_EXTENSIONS" ] ; then \
+echo "No additional PHP extensions added" \
+;else \
+bash /package.sh \
+;fi
 USER apache
 CMD /docker-entrypoint.sh & /sbin/runit-wrapper
