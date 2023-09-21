@@ -33,11 +33,19 @@ sed -i "s#{DISPLAY}#Off#g" /etc/php${PHP_VERSION}/php.ini \
 ARG XDEBUG
 RUN if [ ${XDEBUG} = true ]; then \
 apk add php${PHP_VERSION}-pecl-xdebug \
-&& echo "zend_extension=xdebug" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "[xdebug]" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "zend_extension = xdebug" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "xdebug.mode = debug" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "xdebug.remote_autostart = 0" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "xdebug.remote_enable = 1" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "xdebug.log_level = 0" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "xdebug.discover_client_host = 1" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "xdebug.client_host = host.docker.internal" >> /etc/php${PHP_VERSION}/php.ini \
+&& echo "xdebug.start_with_request = yes" >> /etc/php${PHP_VERSION}/php.ini \
 ;fi
 
 RUN apk add php${PHP_VERSION}-zip php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-gd
-RUN apk add zip
+RUN apk add zip nano
 ARG LARAVEL_VERSION
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN sed -i "s#{LARAVEL_VERSION}#${LARAVEL_VERSION}#g" /docker-entrypoint.sh
