@@ -1,0 +1,704 @@
+name: Laravel
+
+on:
+  schedule:
+  - cron:  '30 21 * * *'
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  PHP7Laravel-AMD64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["7", "8"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 7 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "7"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 7 Laravel ${{ matrix.laraversion }} AMD64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  PHP7Laravel-ARM64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["7", "8"]
+    runs-on: ubuntu-22.04
+    name: PHP7Laravel-ARM64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu22.04
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+      - name: Get the output
+        run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 7 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "7"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 7 Laravel ${{ matrix.laraversion }} ARM64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  ################################################# PHP8.0 #####################################################################################
+  
+  PHP8Laravel-AMD64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["7", "8", "9"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 8 Laravel ${{ matrix.laraversion }} AMD64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  PHP8Laravel-ARM64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["7", "8", "9"]
+    runs-on: ubuntu-22.04
+    name: PHP8Laravel-ARM64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu22.04
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+      - name: Get the output
+        run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 8 Laravel ${{ matrix.laraversion }} ARM64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  ################################################# PHP8.1 #####################################################################################
+
+  PHP81Laravel-AMD64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["8", "9", "10"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8.1 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.1"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 8.1 Laravel ${{ matrix.laraversion }} AMD64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  PHP81Laravel-ARM64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["8", "9", "10"]
+    runs-on: ubuntu-22.04
+    name: PHP81Laravel-ARM64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu22.04
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+      - name: Get the output
+        run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.1"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 8.1 Laravel ${{ matrix.laraversion }} ARM64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  ################################################# PHP8.2 #####################################################################################
+
+  PHP82Laravel-AMD64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["9", "10"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8.2 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.2"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 8.2 Laravel ${{ matrix.laraversion }} AMD64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  PHP82Laravel-ARM64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["9", "10"]
+    runs-on: ubuntu-22.04
+    name: PHP82Laravel-ARM64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu22.04
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+      - name: Get the output
+        run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.2"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github_action_status
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: 'Post Content Mautic ${{ matrix.BACK_END }} PHP 8.2 Laravel ${{ matrix.laraversion }} ARM64 :rocket:'
+          SLACK_TITLE: Post Title
+          SLACK_USERNAME: rtCamp
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
