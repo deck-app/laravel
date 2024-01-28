@@ -194,7 +194,7 @@ jobs:
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
-          PHP_VERSION: "8"
+          PHP_VERSION: "8.0"
           LARAVEL_VERSION: ${{ matrix.laraversion }}
           BACK_END: ${{ matrix.BACK_END }}
           XDEBUG: true
@@ -286,7 +286,7 @@ jobs:
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
-          PHP_VERSION: "8"
+          PHP_VERSION: "8.0"
           LARAVEL_VERSION: ${{ matrix.laraversion }}
           BACK_END: ${{ matrix.BACK_END }}
           XDEBUG: true
