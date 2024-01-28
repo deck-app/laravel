@@ -9,7 +9,7 @@ on:
     branches: [ master ]
 
 jobs:
-  PHP7Laravel-AMD64:
+  PHP74Laravel-AMD64:
     strategy:
       matrix:
         BACK_END: ["nginx", "apache"]
@@ -20,7 +20,7 @@ jobs:
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 7 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
-          PHP_VERSION: "7"
+          PHP_VERSION: "7.4"
           LARAVEL_VERSION: ${{ matrix.laraversion }}
           BACK_END: ${{ matrix.BACK_END }}
           XDEBUG: true
@@ -88,7 +88,7 @@ jobs:
           SLACK_USERNAME: rtCamp
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-  PHP7Laravel-ARM64:
+  PHP74Laravel-ARM64:
     strategy:
       matrix:
         BACK_END: ["nginx", "apache"]
@@ -112,7 +112,7 @@ jobs:
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 7 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
-          PHP_VERSION: "7"
+          PHP_VERSION: "7.4"
           LARAVEL_VERSION: ${{ matrix.laraversion }}
           BACK_END: ${{ matrix.BACK_END }}
           XDEBUG: true
@@ -182,7 +182,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   ################################################# PHP8.0 #####################################################################################
-  
+
   PHP8Laravel-AMD64:
     strategy:
       matrix:
