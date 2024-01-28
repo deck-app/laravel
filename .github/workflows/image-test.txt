@@ -1,6 +1,6 @@
 name: Laravel 
 
-on:
+
   schedule:
   - cron:  '32 21 * * *'
   push:
