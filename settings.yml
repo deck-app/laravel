@@ -12,6 +12,7 @@ user:
       - nginx
     target:
       BACK_END
+
   php_version:
     label:
       PHP version
@@ -21,12 +22,13 @@ user:
       select
     values:
       - 7.4
-      - "8.0"
+      - 8.0
       - 8.1
-      - "8.2"
+      - 8.2
+      - 8.3
     target:
       PHP_VERSION
-  
+
   backend_ws:
       disabled_post_install: true
       label:
@@ -39,7 +41,8 @@ user:
         - 7
         - 8
         - 9
-        - "10"
+        - 10
+        - 11
       target:
         LARAVEL_VERSION
 
@@ -48,7 +51,7 @@ user:
       Enable PHP error reporting?
     type:
       checkbox
-    hint: Check the box to display PHP errors 
+    hint: Check the box to display PHP errors
     target:
       DISPLAY_PHPERROR
   php_xdebug:
@@ -59,7 +62,7 @@ user:
     hint: Check the box to display extension xdebug
     target:
       XDEBUG
-    
+
   # mysql_version:
   #   label:
   #     MySQL version
