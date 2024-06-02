@@ -886,3 +886,224 @@ jobs:
           mention_groups_when: "failure,warnings"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
+
+  ################################################# PHP8.3 #####################################################################################
+
+  PHP83Laravel-AMD64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["10", "11"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8.3 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.3"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Create ENV
+        env:
+          ENV_TEST: ${{ secrets.ENV_TEST }}
+        run: |
+          echo "$ENV_TEST" > .env.test
+        shell: bash
+      - name: Notify on SUCCESS
+        if: ${{ SUCCESS() }}
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{emoji} *{job}* has {status_message}"
+          message_format: "*{workflow}* {status_message} in <{branch_url}|{branch}> Architecture <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+          footer: "Linked Repo <{repo_url}|{repo}>" 
+          mention_users: "D056LFW47NF,"
+          mention_users_when: "SUCCESS"
+          mention_groups: "C06H0SB11JL"
+          mention_groups_when: "SUCCESS"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
+      - name: Notify on FAIL
+        if: ${{ failure() }}
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{emoji} *{job}* has {status_message}"
+          message_format: "*{workflow}* {status_message} in <{branch_url}|{branch}> Architecture <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+          mention_users: "D056LFW47NF"
+          mention_users_when: "failure,warnings"
+          mention_groups: "C06G95T1YH3"
+          mention_groups_when: "failure,warnings"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
+  PHP83Laravel-ARM64:
+    strategy:
+      matrix:
+        BACK_END: ["nginx", "apache"]
+        laraversion: ["10", "11"]
+    runs-on: ubuntu-22.04
+    name: PHP83Laravel-ARM64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu22.04
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+      - name: Get the output
+        run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
+        run: docker-compose -f "docker-compose.yml" up -d --build
+        env:
+          PHP_VERSION: "8.3"
+          LARAVEL_VERSION: ${{ matrix.laraversion }}
+          BACK_END: ${{ matrix.BACK_END }}
+          XDEBUG: true
+          DISPLAY_PHPERROR: true
+          SERVER_ROOT:  /var/www/public
+          APP_CODE_PATH_HOST: /tmp/lara
+      - name: Build the Docker image mariadb
+        run: docker run --detach --name mariadb --network=laravel_default -p 3306:3306 --env MARIADB_DATABASE=test --env MARIADB_USER=test --env MARIADB_PASSWORD=test --env MARIADB_ROOT_PASSWORD=password  ghcr.io/deck-app/mariadb:10.7
+      - name: Build the Docker image Mongodb
+        run: docker run --detach --name mongo --network=laravel_default -p 27017:27017  mongo:latest
+      - name: PHP version check
+        run:  docker exec laravel_laravel_1 php -v
+      - name: Mongodb driver check
+        run:  docker exec laravel_laravel_1 php -m | grep mongo
+      - name: Mysql Driver check
+        run: docker exec laravel_laravel_1 php -m | grep mysqli
+      - name: Git Version check
+        run: docker exec laravel_laravel_1 git --version
+      - name: Curl Version check
+        run: docker exec laravel_laravel_1 curl --version
+      - name: Nodejs Version check
+        run: docker exec laravel_laravel_1 node --version
+      - name: NPM Version check
+        run: docker exec laravel_laravel_1 npm --version
+      - name: Composer test
+        run: docker exec laravel_laravel_1 composer
+      - name: Check laravel install or not
+        run:  |
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:53487/index.php)" != "200" ]]; 
+          do 
+            sleep 10s
+          done
+      - name: Root path check
+        run: docker exec laravel_laravel_1 ls -la /var/www
+      - name: Laravel test
+        run:  curl -i http://localhost:53487/
+      - name: Verify MariaDB running from host, create Database and show Database
+        run: |
+          while ! docker exec mariadb mysqladmin --user=root --password=password --host "mariadb" ping --silent &> /dev/null ; do
+              echo "Waiting for database connection..."
+              sleep 2
+          done
+      - name: Download Database information with env / download preconfigure env
+        run: docker exec laravel_laravel_1 sudo wget -O /var/www/.env https://raw.githubusercontent.com/nabad600/image-test-file/main/laravel.env
+      - name: Enverment file contan check
+        run: docker exec laravel_laravel_1 cat /var/www/.env
+      - name: Check Laravel to mariadb connection status
+        run: docker exec laravel_laravel_1 sudo php artisan migrate
+      - name: Destroy container and file
+        run:  |
+          docker stop mariadb
+          docker stop mongo
+          docker-compose down
+          docker stop $(docker ps -a -q)
+          echo "y" | docker system prune -a
+          sudo rm -rf /tmp/lara
+      - name: Create ENV
+        env:
+          ENV_TEST: ${{ secrets.ENV_TEST }}
+        run: |
+          echo "$ENV_TEST" > .env.test
+        shell: bash
+      - name: Notify on SUCCESS
+        if: ${{ SUCCESS() }}
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{emoji} *{job}* has {status_message}"
+          message_format: "*{workflow}* {status_message} in <{branch_url}|{branch}> Architecture <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+          footer: "Linked Repo <{repo_url}|{repo}>" 
+          mention_users: "D056LFW47NF,"
+          mention_users_when: "SUCCESS"
+          mention_groups: "C06H0SB11JL"
+          mention_groups_when: "SUCCESS"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_SUCCESS }}
+      - name: Notify on FAIL
+        if: ${{ failure() }}
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{emoji} *{job}* has {status_message}"
+          message_format: "*{workflow}* {status_message} in <{branch_url}|{branch}> Architecture <{run_url}|{job}> Approved by ${{ github.event.head_commit.author.name }}"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+          mention_users: "D056LFW47NF"
+          mention_users_when: "failure,warnings"
+          mention_groups: "C06G95T1YH3"
+          mention_groups_when: "failure,warnings"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_FAIL }}
+
