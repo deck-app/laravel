@@ -14,7 +14,7 @@ RUN sed -i "s#{SERVER_ROOT}#/var/preview#g" /etc/apache2/httpd.conf
 RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/httpd.conf
 
 # Persistent runtime dependencies
-# Example RUN apk add --no-cache php82-openssl php82-sysvmsg php82-curl
+# Example RUN apk add --no-cache php83-openssl php83-sysvmsg php83-curl
 
 WORKDIR /var/www
 ENV PHP_VERSION=83
@@ -58,7 +58,7 @@ RUN apk --no-cache add shadow sudo
 RUN usermod -u ${USER_ID} apache && groupmod -g ${GROUP_ID} apache
 
 # sudo command without password
-RUN echo "apache ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers 
+RUN echo "apache ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN composer config --global process-timeout 6000
 
 RUN sed -i "s#{USER_ID}#${USER_ID}#g" /docker-entrypoint.sh
