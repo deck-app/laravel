@@ -15,7 +15,7 @@ RUN sed -i "s#{SERVER_ROOT}#/var/www/public#g" /app/default.conf
 
 
 # Persistent runtime dependencies
-# Example RUN apk add --no-cache php82-openssl php82-sysvmsg php82-curl
+# Example RUN apk add --no-cache php83-openssl php83-sysvmsg php83-curl
 
 WORKDIR /var/www
 ENV PHP_VERSION=83
