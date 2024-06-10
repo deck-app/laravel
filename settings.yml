@@ -38,7 +38,6 @@ user:
       type:
         select
       values:
-        - 7
         - 8
         - 9
         - 10
