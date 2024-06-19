@@ -24,6 +24,7 @@ user:
       - "8.0"
       - 8.1
       - "8.2"
+      - "8.3"
     target:
       PHP_VERSION
   
@@ -40,6 +41,7 @@ user:
         - 8
         - 9
         - "10"
+        - "11"
       target:
         LARAVEL_VERSION
 
