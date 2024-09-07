@@ -24,10 +24,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.1 Laravel 10 and nginx
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -36,11 +32,6 @@ jobs:
           BACK_END: nginx
           LARAVEL_INSTALL: true
           XDEBUG: true
-          DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.1 Laravel 9 and nginx
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -50,10 +41,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.1 Laravel 8 and nginx
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -63,10 +50,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.0 Laravel 9 and nginx
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -76,10 +59,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.0 Laravel 8 and nginx
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -89,10 +68,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.0 Laravel 7 and nginx
         run: docker-compose build
         env:
@@ -102,10 +77,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 7.4 Laravel 8 and nginx
         run: docker-compose build
         env:
@@ -115,10 +86,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 7.4 Laravel 7 and nginx
         run: docker-compose build
         env:
@@ -128,10 +95,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.2 Laravel 10 and apache
         run: docker-compose build
         env:
@@ -141,10 +104,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.1 Laravel 10 and apache
         run: docker-compose build
         env:
@@ -154,10 +113,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.1 Laravel 9 and apache
         run: docker-compose build
         env:
@@ -167,10 +122,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.1 Laravel 8 and apache
         run: docker-compose build
         env:
@@ -180,10 +131,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.0 Laravel 9 and apache
         run: docker-compose build
         env:
@@ -193,10 +140,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.0 Laravel 8 and apache
         run: docker-compose build
         env:
@@ -206,10 +149,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 8.0 Laravel 7 and apache
         run: docker-compose build
         env:
@@ -219,10 +158,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 7.4 Laravel 8 and apache
         run: docker-compose build
         env:
@@ -232,10 +167,6 @@ jobs:
           LARAVEL_INSTALL: true
           XDEBUG: true
           DISPLAY_PHPERROR: true
-      - name: Docker composer installation
-        run: |
-            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
       - name: Build the image with php 7.4 Laravel 7 and apache
         run: docker-compose build
         env:
