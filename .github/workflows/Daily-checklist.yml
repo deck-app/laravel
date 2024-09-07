@@ -17,6 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 7 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -132,6 +136,10 @@ jobs:
       - name: Get the output
         run: |
           echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 7 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -237,6 +245,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -352,6 +364,10 @@ jobs:
       - name: Get the output
         run: |
           echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -457,6 +473,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8.1 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -572,6 +592,10 @@ jobs:
       - name: Get the output
         run: |
           echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -677,6 +701,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8.2 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -792,6 +820,10 @@ jobs:
       - name: Get the output
         run: |
           echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -897,6 +929,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8.3 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
@@ -1012,6 +1048,10 @@ jobs:
       - name: Get the output
         run: |
           echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
+      - name: Docker composer installation
+        run: |
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - name: Build the Docker image ${{ matrix.BACK_END }}, php 8 and laravel ${{ matrix.laraversion }}
         run: docker-compose -f "docker-compose.yml" up -d --build
         env:
